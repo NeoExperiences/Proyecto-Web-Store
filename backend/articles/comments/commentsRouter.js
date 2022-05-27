@@ -1,11 +1,13 @@
 const commentsRouter = require('express').Router()
 
-const { setUserInfo } = require('../../shared/middlewares');
+const { setUserInfo, validateId } = require('../../shared/middlewares');
 
 const {
     // getAllComments,
     getPostComments,
-    addComment
+    addComment,
+    updateComment,
+    deleteComment
 } = require('./commentsService');
 
 
@@ -32,6 +34,27 @@ commentsRouter.post('/', setUserInfo, async (request, response) => {
         response.status(200).json(createdComment)
     } else {
         response.status(400).send("Error al hallar el usuario.")
+    }
+})
+
+commentsRouter.put('/:id', validateId, async (request, response) => {
+    const id = +request.params.id
+    const { userComment } = request.body
+    const comment = {
+        id,
+        userComment
+    }
+    const updated = await updateComment(comment)
+    response.status(updated? 204 : 400).end()
+})
+
+commentsRouter.delete('/:id', validateId, async (request, response) => {
+    const id = +request.params.id
+    try {
+        deleteComment(id)
+        response.status(204).end()
+    } catch (error) {
+        response.status(400).send(error)
     }
 })
 

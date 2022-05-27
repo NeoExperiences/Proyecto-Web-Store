@@ -36,14 +36,14 @@ const updateArticle = async article => {
     return modified > 0
 }
 
-const addArticle = async product => {
+const addArticle = async article => {
     const [id] = await db.query(`
     INSERT INTO articulos (postName, postContent, userID, picture) VALUES
         (:postName, :postContent, :userID, :picture)
     `, {
-        replacements: product
+        replacements: article
     })
-    return { ...product, id }
+    return { ...article, id }
 }
 
 const deleteArticle = async id => {

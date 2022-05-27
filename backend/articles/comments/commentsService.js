@@ -2,7 +2,7 @@ const { db } = require('../../db/connect')
 
 const getAllComments = async () => {
     return await db.query(`
-        SELECT comment.postID, comment.userID, comment.userComment
+        SELECT comment.postID, comment.userID, comment.userComment, user.id
         FROM comentarios comment
         JOIN usuarios user ON comment.userID = user.id
         JOIN articulos post ON comment.postID = post.id
@@ -29,6 +29,31 @@ const getPostComments = async articleid => {
     }
 }
 
+const deleteComment = async id => {
+    await db.query(`
+        DELETE FROM comentarios WHERE id = :id;
+    `, {
+        replacements: { id }
+    })
+}
+
+const updateComment = async comment => {
+    try{
+        const [, modified] = await db.query(`
+            UPDATE comentarios SET
+                userComment = :userComment
+            WHERE id = :id
+        `, {
+            type: db.QueryTypes.SELECT,
+            replacements: comment
+        })
+        return modified > 0
+    } catch (error) {
+        console.log(error)
+        return { error }
+    }
+}
+
 const addComment = async comment => {
     try{
         const [id] = await db.query(`
@@ -48,5 +73,7 @@ const addComment = async comment => {
 module.exports = {
     getAllComments,
     getPostComments,
-    addComment
+    addComment,
+    updateComment,
+    deleteComment
 }
