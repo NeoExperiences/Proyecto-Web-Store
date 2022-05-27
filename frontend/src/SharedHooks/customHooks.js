@@ -18,3 +18,8 @@ export const useUserData = () => {
     }, [])
     return userData
 }
+
+export const useUserPrivilege = (role) => {
+    const { roleName } = useUserData()
+    return roleName === role
+}

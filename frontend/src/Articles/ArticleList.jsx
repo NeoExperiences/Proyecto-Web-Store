@@ -5,10 +5,12 @@ import { useTextInput } from "../SharedHooks/customHooks";
 import { Filter } from "./ArticleFilter";
 import { ArticleCard } from "./ArticleCard";
 import { Link } from "react-router-dom";
+import { useUserPrivilege } from "../SharedHooks/customHooks";
 
 export const ArticleList = () => {
   const [list, setList] = useState([]);
   const [filter, setFilter] = useTextInput("");
+  const isAdmin = useUserPrivilege("admin");
 
   const filteredTitle = list.filter((article) =>
     article.userName?.includes(filter)
@@ -23,9 +25,11 @@ export const ArticleList = () => {
     <Container fluid>
       <Row>
         <Col>
-          <Link to={"/Post"}>
-            <Button>Crear Articulo</Button>
-          </Link>
+          {isAdmin && (
+            <Link to={"/Post"}>
+              <Button>Crear Articulo</Button>
+            </Link>
+          )}
           <Filter filter={filter} setFilter={setFilter} placeholder="Autor:" />
         </Col>
       </Row>

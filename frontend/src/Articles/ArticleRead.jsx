@@ -7,7 +7,11 @@ import { Row, Image } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import { useTextInput, useUserData } from "../SharedHooks/customHooks";
+import {
+  useTextInput,
+  useUserData,
+  useUserPrivilege,
+} from "../SharedHooks/customHooks";
 import { CommentList } from "./Comments/CommentList";
 import { fetchArticle, useFetchUserData } from "./helpers";
 
@@ -36,6 +40,8 @@ export const ArticleRead = () => {
   };
 
   const originalPoster = article?.userid === useUserData().id;
+  const isAdmin = useUserPrivilege("admin");
+  const postPrivilige = originalPoster || isAdmin;
 
   const updatePost = async (event) => {
     event.preventDefault();
@@ -85,7 +91,7 @@ export const ArticleRead = () => {
 
   return (
     <>
-      {originalPoster && (
+      {postPrivilige && (
         <Container data-testid="original-poster">
           <Button onClick={toggleEdit}>Editar</Button>
           <Button onClick={deletePost}>Borrar</Button>

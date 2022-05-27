@@ -14,13 +14,22 @@ import { Container } from "react-bootstrap";
 import { Nav } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { Button } from "react-bootstrap";
 
 export function App() {
   const location = useLocation();
   const navigate = useNavigate();
+
+  const [userToken, setUserToken] = useState(
+    localStorage.getItem("tokenStorage")
+  );
+
   useEffect(
     () => {
-      if (!localStorage.getItem("tokenStorage")) {
+      if (
+        !localStorage.getItem("tokenStorage") &&
+        !/^\/register$/i.test(location.pathname)
+      ) {
         navigate(`/login`);
       } else if (/^\/login$/i.test(location.pathname)) {
         navigate(`/articles`);
@@ -28,58 +37,70 @@ export function App() {
     }, // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
+
+  const setToken = (token) => {
+    localStorage.setItem("tokenStorage", token);
+    setUserToken(token);
+  };
+
+  const signOut = () => {
+    localStorage.removeItem("tokenStorage");
+    setUserToken(null);
+    navigate("/login");
+  };
+
   const [userData, setUserData] = useState({});
   useEffect(() => {
     fetch(`http://localhost:5000/userprofile`, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("tokenStorage")}`,
+        Authorization: `Bearer ${userToken}`,
       },
     })
       .then((response) => (response.ok ? response.json() : {}))
       .then((userData) => setUserData(userData));
-  }, []);
+  }, [userToken]);
 
   return (
     <div className="App">
       <Navbar bg="primary" variant="dark">
         <Container>
-          <Navbar.Brand as={Link} to={"/Articles"}>
-            Navbar
-          </Navbar.Brand>
-          <Nav className="me-auto">
-            <Nav.Link as={Link} to={"/Articles"}>
-              Home
-            </Nav.Link>
-            {/* <Link to={"/Articles"} className="nav-link" style={{color:"white"}}>Home</Link> */}
-            <Nav.Link as={Link} to={"/Pictures"}>
-              Pictures
-            </Nav.Link>
-            <Nav.Link as={Link} to={"/Users"}>
-              Users
-            </Nav.Link>
-            <Nav.Link as={Link} to={"/Profile"}>
-              Profile
-            </Nav.Link>
-          </Nav>
-          <Nav>
-            <Nav.Link as={Link} to={"/Profile"}>
-              {userData.username}
-            </Nav.Link>
-          </Nav>
+          {userToken ? (
+            <>
+              <Navbar.Brand as={Link} to={"/Articles"}>
+                Navbar
+              </Navbar.Brand>
+              <Nav className="me-auto">
+                <Nav.Link as={Link} to={"/Articles"}>
+                  Home
+                </Nav.Link>
+                <Nav.Link as={Link} to={"/Pictures"}>
+                  Pictures
+                </Nav.Link>
+                <Nav.Link as={Link} to={"/Users"}>
+                  Users
+                </Nav.Link>
+              </Nav>
+              <Nav>
+                <Nav.Link as={Link} to={"/Profile"}>
+                  {userData.username}
+                </Nav.Link>
+              </Nav>
+              <Nav>
+                <Nav.Link as={Button} onClick={signOut}>
+                  Deslogearse
+                </Nav.Link>
+              </Nav>
+            </>
+          ) : (
+            <Navbar.Brand>Navbar</Navbar.Brand>
+          )}
         </Container>
       </Navbar>
       <Routes>
         <Route path="/pictures/*" element={<Pictures />} />
         <Route
           path="/login"
-          element={
-            <Login
-              setToken={(token) => {
-                localStorage.setItem("tokenStorage", token);
-              }}
-              originalPath={"/articles"}
-            />
-          }
+          element={<Login setToken={setToken} originalPath={"/articles"} />}
         />
         <Route
           path="/register"
