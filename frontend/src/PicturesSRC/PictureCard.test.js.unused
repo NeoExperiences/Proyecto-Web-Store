@@ -1,0 +1,43 @@
+import { render, screen } from '@testing-library/react';
+import { PictureCard } from './PictureCard';
+
+const mockNavigate = jest.fn()
+
+jest.mock('react-router-dom', () => ({ useNavigate: () => mockNavigate }))
+
+describe('When rendering PictureCard', () => {
+
+    describe('Without Props', () => {
+        test('Renders an empty card', () => {
+            render(<PictureCard/>)
+            expect(screen.getByTestId('picture-card-missing-props')).toBeInTheDocument()
+        })
+    })
+
+    describe('With Props', () => {
+        const basicProps = {
+            author: "abc",
+            title: "lorem ipsum"
+        }
+        test('Renders card with received details', () => {
+            render(<PictureCard {...basicProps}/>)
+            const component = screen.getByTestId('picture-card')
+            expect(component).toHaveTextContent(basicProps.author)
+            expect(component).toHaveTextContent(basicProps.title)
+            expect(mockNavigate).toHaveBeenCalledTimes(0);
+        })
+    //     test('Renders card without details button', () => {
+    //         render(<PictureCard {...basicProps}/>)
+    //         expect(screen.findByTestId('picture-card')).toBeInTheDocument()
+    //     })
+    // })
+    
+    //     test('', () => {
+    //     })
+
+
+    //     test('', () => {
+            
+    })
+})
+

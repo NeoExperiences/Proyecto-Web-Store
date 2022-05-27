@@ -1,0 +1,14 @@
+import { render, screen } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
+import { App } from './App';
+
+
+test('renders login', () => {
+  render(<MemoryRouter><App /></MemoryRouter>);
+  const linkElement = screen.getByText(/log in/i);
+  expect(linkElement).toBeInTheDocument();
+  expect(screen.getByTestId('login-page')).toBeInTheDocument('log in');
+  expect(screen.getByText(/User Name/)).toBeInTheDocument();
+  expect(screen.getByText(/Password/i)).toBeInTheDocument();
+});
+

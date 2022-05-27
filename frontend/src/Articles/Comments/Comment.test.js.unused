@@ -1,0 +1,6 @@
+import { render, screen } from '@testing-library/react';
+
+
+const mockFetch = jest.fn()
+
+jest.mock('./helpers', () => ({ fetchComments: () => mockFetch }))
