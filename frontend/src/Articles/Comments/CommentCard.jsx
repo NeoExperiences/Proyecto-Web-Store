@@ -3,7 +3,11 @@ import { Button } from "react-bootstrap";
 import { Form } from "react-bootstrap";
 import { Container } from "react-bootstrap";
 import { Card } from "react-bootstrap";
-import { useTextInput, useUserData } from "../../SharedHooks/customHooks";
+import {
+  useTextInput,
+  useUserData,
+  useUserPrivilege,
+} from "../../SharedHooks/customHooks";
 
 export const CommentCard = ({
   userName,
@@ -16,6 +20,7 @@ export const CommentCard = ({
   const [enableEdit, setEnableEdit] = useState(false);
   const [editedComment, setEditedComment] = useTextInput(userComment);
   const originalCommenter = userID === useUserData().id;
+  const isAdmin = useUserPrivilege("admin");
 
   const updateComment = async (event) => {
     event.preventDefault();
@@ -85,11 +90,11 @@ export const CommentCard = ({
           <>
             <Card.Header>
               {userName}
-              {originalCommenter && (
-                <>
+              {(isAdmin || originalCommenter) && (
+                <Container>
                   <Button onClick={toggleEdit}>Editar</Button>
                   <Button onClick={deletePost}>Borrar</Button>
-                </>
+                </Container>
               )}
             </Card.Header>
             <Card.Body>

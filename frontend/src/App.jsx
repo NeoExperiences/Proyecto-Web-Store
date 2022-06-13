@@ -92,7 +92,17 @@ export function App() {
               </Nav>
             </>
           ) : (
-            <Navbar.Brand>Navbar</Navbar.Brand>
+            <>
+              <Navbar.Brand>Navbar</Navbar.Brand>
+              <Nav>
+                <Nav.Link as={Link} to={"/Login"}>
+                  Logearse
+                </Nav.Link>
+                <Nav.Link as={Link} to={"/Register"}>
+                  Registrarse
+                </Nav.Link>
+              </Nav>
+            </>
           )}
         </Container>
       </Navbar>
