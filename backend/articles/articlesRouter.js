@@ -52,7 +52,16 @@ articlesRouter.delete('/:id', validateId, verifyArticle, checkRole('admin'), asy
 })
 
 articlesRouter.post('/', checkRole('admin'), async (request, response) => {
-    response.status(200).json(await addArticle(request.body))
+    const { postName, postContent, userID, picture, categoryID } = request.body
+    const article = {
+        postName,
+        postContent,
+        userID,
+        postDate:new Date(),
+        postCategory:categoryID,
+        picture
+    }
+    response.status(200).json(await addArticle(article))
 })
 
 

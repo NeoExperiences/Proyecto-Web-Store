@@ -143,6 +143,9 @@ export const ArticleRead = () => {
                     <footer style={{ fontWeight: "700" }}>
                       Autor: {article?.userName}
                     </footer>
+                    <footer style={{ fontWeight: "700" }}>
+                      Categoria: {article?.categoryName}
+                    </footer>
                   </Col>
                 </Row>
               </Container>

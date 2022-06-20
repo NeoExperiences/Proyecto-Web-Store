@@ -14,7 +14,7 @@ const getAllComments = async () => {
 const getPostComments = async articleid => {
     try{
         const comments = await db.query(`
-            SELECT comment.postID, comment.userID, comment.userComment, users.username as userName, comment.id as commentID
+            SELECT comment.postID, comment.userID, comment.userComment, users.username as userName, comment.id as commentID, comment.commentDate
             FROM comentarios comment
             JOIN usuarios users ON comment.userID = users.id
             WHERE comment.postID = :articleid
@@ -57,8 +57,8 @@ const updateComment = async comment => {
 const addComment = async comment => {
     try{
         const [id] = await db.query(`
-        INSERT INTO comentarios (userComment, userID, postID) VALUES
-            (:userComment, :userID, :postID)
+        INSERT INTO comentarios (userComment, userID, postID, commentDate) VALUES
+            (:userComment, :userID, :postID, :commentDate)
         `, {
             replacements: comment
         })

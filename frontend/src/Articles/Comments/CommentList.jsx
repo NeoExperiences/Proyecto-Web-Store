@@ -28,20 +28,23 @@ export const CommentList = () => {
         articleID={articleID}
         refreshComments={refreshComments}
       ></CommentBox>
-      {comments.map(({ userName, userID, userComment, commentID }) => (
-        <Row key={commentID}>
-          <Col className="mb-1 mt-1">
-            <CommentCard
-              refreshComments={refreshComments}
-              commentID={commentID}
-              articleID={articleID}
-              userName={userName}
-              userID={userID}
-              userComment={userComment}
-            ></CommentCard>
-          </Col>
-        </Row>
-      ))}
+      {comments.map(
+        ({ userName, userID, userComment, commentID, commentDate }) => (
+          <Row key={commentID}>
+            <Col className="mb-1 mt-1">
+              <CommentCard
+                refreshComments={refreshComments}
+                commentID={commentID}
+                articleID={articleID}
+                userName={userName}
+                userID={userID}
+                userComment={userComment}
+                commentDate={commentDate}
+              ></CommentCard>
+            </Col>
+          </Row>
+        )
+      )}
     </Container>
   );
 };

@@ -15,8 +15,13 @@ const verifyUser = async (request, response, next) => {
 }
 
 usersRouter.get('/', checkRole('admin'), async (request, response) => {
-    response.status(200).json(await getAllUsers())
+    try {
+        response.status(200).json(await getAllUsers())
+    } catch (error) { 
+        response.status(400).send(error)
+    }
 })
+
 
 usersRouter.get('/:id', validateId, async (request, response) => {
     const id = +request.params.id

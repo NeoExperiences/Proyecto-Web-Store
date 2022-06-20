@@ -2,9 +2,10 @@ const { db } = require('../db/connect')
 
 const getAllArticles = async () => {
     return await db.query(`
-        SELECT artic.id, artic.postName, artic.postContent, artic.picture, user.username as userName
+        SELECT artic.id, artic.postName, artic.postContent, artic.picture, user.username as userName, artic.postDate, cat.name as categoryName, cat.id as categoryID
         FROM articulos artic
         JOIN usuarios user ON artic.userID = user.id
+        JOIN categorias cat ON artic.postCategory = cat.id
     `, {
         type: db.QueryTypes.SELECT
     })
@@ -12,9 +13,10 @@ const getAllArticles = async () => {
 
 const getArticle = async id => {
     const [article] = await db.query(`
-    SELECT artic.id, artic.postName, artic.postContent, artic.picture, user.username as userName, artic.userid
+    SELECT artic.id, artic.postName, artic.postContent, artic.picture, user.username as userName, artic.userid, artic.postDate, cat.name as categoryName, cat.id as categoryID
     FROM articulos artic
     JOIN usuarios user ON artic.userID = user.id
+    JOIN categorias cat ON artic.postCategory = cat.id
     WHERE artic.id = :id
     `, {
         type: db.QueryTypes.SELECT,
@@ -38,8 +40,8 @@ const updateArticle = async article => {
 
 const addArticle = async article => {
     const [id] = await db.query(`
-    INSERT INTO articulos (postName, postContent, userID, picture) VALUES
-        (:postName, :postContent, :userID, :picture)
+    INSERT INTO articulos (postName, postContent, userID, picture, postDate, postCategory) VALUES
+        (:postName, :postContent, :userID, :picture, :postDate, :postCategory)
     `, {
         replacements: article
     })

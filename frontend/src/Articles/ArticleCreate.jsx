@@ -1,12 +1,16 @@
+import { useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
 import { Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { useTextInput, useUserData } from "../SharedHooks/customHooks";
+import { FilterByCategory } from "./ArticleFilterByCategory";
 
 export const ArticleCreate = () => {
   const navigate = useNavigate();
   const [createdPostTitle, setCreatedPostTitle] = useTextInput("");
   const [createdPost, setCreatedPost] = useTextInput("");
+  const [categoryList, setCategoryList] = useState([]);
+  const [categorySelection, setCategorySelection] = useTextInput("");
   const userID = useUserData().id;
 
   const createPost = async (event) => {
@@ -22,6 +26,7 @@ export const ArticleCreate = () => {
           postName: createdPostTitle,
           postContent: createdPost,
           userID: userID,
+          categoryID: categorySelection,
           picture: "",
         }),
       });
@@ -34,6 +39,13 @@ export const ArticleCreate = () => {
       console.log("error", error);
     }
   };
+
+  useEffect(() => {
+    fetch(`http://localhost:5000/categories`)
+      .then((response) => (response.ok ? response.json() : []))
+      .then((category) => setCategoryList([].concat(category)));
+  }, []);
+
   return (
     <Container data-testid="creating-post">
       <Form onSubmit={createPost}>
@@ -42,6 +54,11 @@ export const ArticleCreate = () => {
             onChange={setCreatedPostTitle}
             value={createdPostTitle}
             rows={5}
+          />
+          <FilterByCategory
+            filter={categorySelection}
+            setFilter={setCategorySelection}
+            categoryList={categoryList}
           />
           <Form.Control
             as="textarea"

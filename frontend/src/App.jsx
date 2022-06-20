@@ -1,9 +1,7 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import { Route, Routes, useNavigate, useLocation } from "react-router-dom";
-import { Pictures } from "./PicturesSRC";
 import { Login, UserContextProvider } from "./Login";
-import { Products } from "./Products";
 import { Articles } from "./Articles";
 import { Register } from "./Register";
 import { UserProfile } from "./UserProfile";
@@ -15,10 +13,12 @@ import { Nav } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { Button } from "react-bootstrap";
+import { useUserPrivilege } from "./SharedHooks/customHooks";
 
 export function App() {
   const location = useLocation();
   const navigate = useNavigate();
+  const isAdmin = useUserPrivilege("admin");
 
   const [userToken, setUserToken] = useState(
     localStorage.getItem("tokenStorage")
@@ -73,12 +73,11 @@ export function App() {
                 <Nav.Link as={Link} to={"/Articles"}>
                   Home
                 </Nav.Link>
-                <Nav.Link as={Link} to={"/Pictures"}>
-                  Pictures
-                </Nav.Link>
-                <Nav.Link as={Link} to={"/Users"}>
-                  Users
-                </Nav.Link>
+                {isAdmin && (
+                  <Nav.Link as={Link} to={"/Users"}>
+                    Administrator Panel
+                  </Nav.Link>
+                )}
               </Nav>
               <Nav>
                 <Nav.Link as={Link} to={"/Profile"}>
@@ -107,7 +106,6 @@ export function App() {
         </Container>
       </Navbar>
       <Routes>
-        <Route path="/pictures/*" element={<Pictures />} />
         <Route
           path="/login"
           element={<Login setToken={setToken} originalPath={"/articles"} />}
@@ -123,7 +121,6 @@ export function App() {
             />
           }
         />
-        <Route path="/products/*" element={<Products />} />
         <Route path="/articles/*" element={<Articles />} />
         <Route path="/profile/*" element={<UserProfile />} />
         <Route path="/users/*" element={<Users />} />

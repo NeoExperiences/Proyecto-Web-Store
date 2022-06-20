@@ -16,6 +16,7 @@ export const CommentCard = ({
   refreshComments,
   articleID,
   commentID,
+  commentDate,
 }) => {
   const [enableEdit, setEnableEdit] = useState(false);
   const [editedComment, setEditedComment] = useTextInput(userComment);
@@ -90,6 +91,7 @@ export const CommentCard = ({
           <>
             <Card.Header>
               {userName}
+              <Container>{commentDate}</Container>
               {(isAdmin || originalCommenter) && (
                 <Container>
                   <Button onClick={toggleEdit}>Editar</Button>

@@ -26,10 +26,9 @@ commentsRouter.get('/', async (request, response) => {
 })
 
 commentsRouter.post('/', setUserInfo, async (request, response) => {
-    const commentRequest = {userComment:request.body.userComment, userID:request.userInfo.id, postID:request.postID}
-    console.log(commentRequest)
+    const date = new Date()
+    const commentRequest = {userComment:request.body.userComment, userID:request.userInfo.id, postID:request.postID, commentDate:date}
     const {createdComment, error} = await addComment(commentRequest)
-    console.log(createdComment)
     if(createdComment) {
         response.status(200).json(createdComment)
     } else {

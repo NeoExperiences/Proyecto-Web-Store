@@ -1,57 +1,145 @@
-import { Button, Col, Container, Row } from "react-bootstrap";
+import { Button, Card, Col, Container, Row } from "react-bootstrap";
 
 import { useEffect, useState } from "react";
 import { useTextInput } from "../SharedHooks/customHooks";
-import { Filter } from "./ArticleFilter";
+import { Filter } from "./ArticleFilterByAuthor";
 import { ArticleCard } from "./ArticleCard";
 import { Link } from "react-router-dom";
 import { useUserPrivilege } from "../SharedHooks/customHooks";
+import { FilterByCategory } from "./ArticleFilterByCategory";
 
 export const ArticleList = () => {
-  const [list, setList] = useState([]);
-  const [filter, setFilter] = useTextInput("");
+  const [articleList, setArticleList] = useState([]);
+  const [filterByAuthor, setFilterByAuthor] = useTextInput("");
+  const [enableFilterByAuthor, setEnableFilterByAuthor] = useState(false);
+  const [enableFilterByCategory, setEnableFilterByCategory] = useState(false);
+  const [categoryFilter, setCategoryFilter] = useTextInput("");
+  const [categoryList, setCategoryList] = useState([]);
   const isAdmin = useUserPrivilege("admin");
 
-  const filteredTitle = list.filter((article) =>
-    article.userName?.includes(filter)
+  const filteredByAuthor = articleList.filter((article) =>
+    article.userName?.includes(filterByAuthor)
   );
+
+  const filteredByCategory = articleList.filter(
+    (article) => article.categoryID == +categoryFilter
+  );
+
   useEffect(() => {
     fetch(`http://localhost:5000/articles`)
       .then((response) => (response.ok ? response.json() : []))
-      .then((articles) => setList([].concat(articles).slice(0, 51).reverse()));
+      .then((articles) =>
+        setArticleList([].concat(articles).slice(0, 51).reverse())
+      );
   }, []);
+
+  useEffect(() => {
+    fetch(`http://localhost:5000/categories`)
+      .then((response) => (response.ok ? response.json() : []))
+      .then((category) => setCategoryList([].concat(category)));
+  }, []);
+
+  const toggleFilterByAuthor = () => {
+    if (enableFilterByAuthor) setEnableFilterByAuthor(false);
+    else setEnableFilterByAuthor(true);
+  };
+  const toggleFilterByCategory = () => {
+    if (enableFilterByCategory) setEnableFilterByCategory(false);
+    else setEnableFilterByCategory(true);
+  };
 
   return (
     <Container fluid>
+      {isAdmin && (
+        <Link to={"/Post"}>
+          <Button>Crear Articulo</Button>
+        </Link>
+      )}
+      {enableFilterByAuthor && (
+        <Row>
+          <Col>
+            <Filter
+              filter={filterByAuthor}
+              setFilter={setFilterByAuthor}
+              placeholder="Autor:"
+            />
+          </Col>
+        </Row>
+      )}
       <Row>
-        <Col>
-          {isAdmin && (
-            <Link to={"/Post"}>
-              <Button>Crear Articulo</Button>
-            </Link>
-          )}
-          <Filter filter={filter} setFilter={setFilter} placeholder="Autor:" />
+        <Col md={{ span: 3, offset: 9 }}>
+          <Card border="light">
+            <Card.Header>Filtrar por:</Card.Header>
+            <Card.Body>
+              {!enableFilterByCategory && (
+                <Button onClick={toggleFilterByAuthor}>Autor</Button>
+              )}
+              {!enableFilterByAuthor && (
+                <Button onClick={toggleFilterByCategory}>Categoria</Button>
+              )}
+              {enableFilterByCategory && (
+                <FilterByCategory
+                  filter={categoryFilter}
+                  setFilter={setCategoryFilter}
+                  categoryList={categoryList}
+                />
+              )}
+            </Card.Body>
+          </Card>
         </Col>
-      </Row>
-      <Row>
-        {filteredTitle.map(
-          ({ id, userName, postName, picture }) => (
-            <Col className="mb-5 mt-5" key={id} lg="8" sm="12">
-              <ArticleCard
-                id={id}
-                userName={userName}
-                postName={postName}
-                picture={picture}
-              />
-            </Col>
-          )
-          // ({id, userName, postName, picture}) =>
-          // <Col className="mb-5 mt-5"  key={id} lg="2" sm="4">
-          //     <div>{postName}</div>
-          //     <div><img src={picture} alt="404"/></div>
-          //     <div>Autor: {userName}</div>
-          //     <Link to={`/Articles/${id}`}><Button>Ir al articulo</Button></Link>
-          // </Col>
+        {!enableFilterByAuthor && !enableFilterByCategory && (
+          <>
+            {articleList.map(
+              ({ id, userName, postName, picture, postDate, categoryName }) => (
+                <Col className="mb-5 mt-5" key={id} lg="8" sm="12">
+                  <ArticleCard
+                    id={id}
+                    userName={userName}
+                    postName={postName}
+                    picture={picture}
+                    postDate={postDate}
+                    categoryName={categoryName}
+                  />
+                </Col>
+              )
+            )}
+          </>
+        )}
+        {enableFilterByAuthor && !enableFilterByCategory && (
+          <>
+            {filteredByAuthor.map(
+              ({ id, userName, postName, picture, postDate, categoryName }) => (
+                <Col className="mb-5 mt-5" key={id} lg="8" sm="12">
+                  <ArticleCard
+                    id={id}
+                    userName={userName}
+                    postName={postName}
+                    picture={picture}
+                    postDate={postDate}
+                    categoryName={categoryName}
+                  />
+                </Col>
+              )
+            )}
+          </>
+        )}
+        {enableFilterByCategory && !enableFilterByAuthor && (
+          <>
+            {filteredByCategory.map(
+              ({ id, userName, postName, picture, postDate, categoryName }) => (
+                <Col className="mb-5 mt-5" key={id} lg="8" sm="12">
+                  <ArticleCard
+                    id={id}
+                    userName={userName}
+                    postName={postName}
+                    picture={picture}
+                    postDate={postDate}
+                    categoryName={categoryName}
+                  />
+                </Col>
+              )
+            )}
+          </>
         )}
       </Row>
     </Container>
