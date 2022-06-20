@@ -9,7 +9,6 @@ import { CommentBox } from "./CommentBox";
 
 export const CommentList = () => {
   const { id: articleID } = useParams();
-  const [enableEdit, setEnableEdit] = useState(false);
   const [comments, setComments] = useState([]);
   const refreshComments = () => {
     fetchComments(articleID).then((comments) =>

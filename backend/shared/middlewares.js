@@ -10,7 +10,6 @@ const validateId = (request, response, next) => {
 const setUserInfo = (request, response, next) => {
     try {
         request.userInfo = jwt.verify(request.headers.authorization.split(' ')[1], jwtSecret)
-        console.log(Date.now() - request.userInfo.iat * 1000)
         if ((Date.now() - request.userInfo.iat * 1000) < 2000000000)
             next()
         else(

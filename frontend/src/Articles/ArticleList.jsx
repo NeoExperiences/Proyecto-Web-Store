@@ -28,7 +28,7 @@ export const ArticleList = () => {
   );
 
   const filteredByCategory = articleList.filter(
-    (article) => article.categoryID == +categoryFilter
+    (article) => article.categoryID === +categoryFilter
   );
 
   useEffect(() => {

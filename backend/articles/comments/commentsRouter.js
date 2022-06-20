@@ -9,6 +9,7 @@ const {
     updateComment,
     deleteComment
 } = require('./commentsService');
+const { repliesRouter } = require('./replies/repliesRouter');
 
 
 // commentsRouter.get('/', async (request, response) => {
@@ -56,5 +57,10 @@ commentsRouter.delete('/:id', validateId, async (request, response) => {
         response.status(400).send(error)
     }
 })
+
+commentsRouter.use('/:id/replies', validateId, (request, response, next) => {
+    request.commentID = +request.params.id;
+    next()
+}, repliesRouter)
 
 module.exports = { commentsRouter }

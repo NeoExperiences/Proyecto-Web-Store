@@ -31,6 +31,11 @@ const getPostComments = async articleid => {
 
 const deleteComment = async id => {
     await db.query(`
+        DELETE FROM respuestas WHERE commentID = :id;
+    `, {
+        replacements: { id }
+    })
+    await db.query(`
         DELETE FROM comentarios WHERE id = :id;
     `, {
         replacements: { id }

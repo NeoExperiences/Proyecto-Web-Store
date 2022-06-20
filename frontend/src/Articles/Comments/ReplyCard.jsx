@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { Button, Col, Row } from "react-bootstrap";
+import { useState } from "react";
+import { Button } from "react-bootstrap";
 import { Form } from "react-bootstrap";
 import { Container } from "react-bootstrap";
 import { Card } from "react-bootstrap";
@@ -8,43 +8,35 @@ import {
   useUserData,
   useUserPrivilege,
 } from "../../SharedHooks/customHooks";
-import { fetchReplies } from "./helpers";
-import { ReplyBox } from "./ReplyBox";
-import { ReplyCard } from "./ReplyCard";
 
-export const CommentCard = ({
-  userName,
-  userComment,
+export const ReplyCard = ({
+  replyUserName,
+  userReply,
   userID,
   refreshComments,
   articleID,
   commentID,
-  commentDate,
+  replyID,
+  replyDate,
 }) => {
   const [enableEdit, setEnableEdit] = useState(false);
-  const [editedComment, setEditedComment] = useTextInput(userComment);
+  const [editedReply, setEditedReply] = useTextInput(userReply);
   const originalCommenter = userID === useUserData().id;
   const isAdmin = useUserPrivilege("admin");
-  const [replies, setReplies] = useState([]);
 
-  useEffect(() => {
-    fetchReplies(articleID, commentID).then((replies) =>
-      setReplies(replies.reverse())
-    );
-  }, [articleID, commentID]);
-
-  const updateComment = async (event) => {
+  const updateReply = async (event) => {
     event.preventDefault();
+    console.log("HEEEEEERE");
     try {
       const response = await fetch(
-        `http://localhost:5000/articles/${articleID}/comments/${commentID}`,
+        `http://localhost:5000/articles/${articleID}/comments/${commentID}/replies/${replyID}`,
         {
           method: "put",
           headers: {
             Authorization: `Bearer ${localStorage.getItem("tokenStorage")}`,
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ userComment: editedComment }),
+          body: JSON.stringify({ userReply: editedReply }),
         }
       );
       if (response.ok) {
@@ -56,10 +48,10 @@ export const CommentCard = ({
     }
   };
 
-  const deletePost = async (event) => {
+  const deleteReply = async (event) => {
     try {
       const response = await fetch(
-        `http://localhost:5000/articles/${articleID}/comments/${commentID}`,
+        `http://localhost:5000/articles/${articleID}/comments/${commentID}/replies/${replyID}`,
         {
           method: "delete",
           headers: {
@@ -86,12 +78,12 @@ export const CommentCard = ({
     <Container>
       <Card border="light">
         {enableEdit ? (
-          <Form onSubmit={updateComment}>
+          <Form onSubmit={updateReply}>
             <Form.Group className="mb-3">
               <Form.Control
                 as="textarea"
-                onChange={setEditedComment}
-                value={editedComment}
+                onChange={setEditedReply}
+                value={editedReply}
                 rows={5}
               />
               <Form.Control className="nt-3" type="submit" />
@@ -100,41 +92,20 @@ export const CommentCard = ({
         ) : (
           <>
             <Card.Header>
-              <Container>{commentDate}</Container>
-              {userName} dice:
+              <Container>{replyDate}</Container>
+              {replyUserName} responde:
               {(isAdmin || originalCommenter) && (
                 <Container>
                   <Button onClick={toggleEdit}>Editar</Button>
-                  <Button onClick={deletePost}>Borrar</Button>
+                  <Button onClick={deleteReply}>Borrar</Button>
                 </Container>
               )}
             </Card.Header>
             <Card.Body>
-              <Card.Title>{userComment}</Card.Title>
-              <ReplyBox
-                articleID={articleID}
-                commentID={commentID}
-                refreshComments={refreshComments}
-              />
+              <Card.Title>{userReply}</Card.Title>
             </Card.Body>
           </>
         )}
-        {replies.map(({ id, replyUserName, userID, userReply, replyDate }) => (
-          <Row key={id}>
-            <Col md={{ span: 9, offset: 3 }}>
-              <ReplyCard
-                refreshComments={refreshComments}
-                commentID={commentID}
-                articleID={articleID}
-                replyUserName={replyUserName}
-                userID={userID}
-                userReply={userReply}
-                replyDate={replyDate}
-                replyID={id}
-              ></ReplyCard>
-            </Col>
-          </Row>
-        ))}
       </Card>
     </Container>
   );
