@@ -32,7 +32,6 @@ export const ArticleCreate = () => {
       });
       if (response.ok) {
         const { id } = await response.json();
-        console.log(response.body);
         navigate(`/articles/${id}`);
       }
     } catch (error) {
