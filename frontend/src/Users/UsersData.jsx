@@ -28,15 +28,6 @@ export const UsersData = () => {
   };
 
   return (
-    // <Container>{userData.map( ({username, email, address}) =>
-    //     <Row style={{textAlign:"justify"}}>
-    //         <Col>Username: {username}</Col>
-    //         <Col>Email: {email}</Col>
-    //         <Col>Address: {address}</Col>
-    //         <Col><Link to={"/Articles"}><Button>Volver</Button></Link></Col>
-    //     </Row>)}
-    // </Container>
-
     <>
       {isAdmin && (
         <Table striped bordered hover>

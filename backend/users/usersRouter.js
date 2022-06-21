@@ -3,6 +3,7 @@ const {
     getAllUsers,
     getUser,
     updateUser,
+    changeUser,
     addUser,
     deleteUser
 } = require('./usersService');
@@ -44,6 +45,18 @@ usersRouter.put('/:id', validateId, verifyUser, checkRole('admin'), async (reque
     response.status(updated? 204 : 400).end()
 })
 
+usersRouter.put('/change/:id', validateId, verifyUser, async (request, response) => {
+    const id = +request.params.id
+    const { username, address, email} = request.body
+    const user = {
+        id,
+        username,
+        address,
+        email,
+    }
+    const updated = await changeUser(user)
+    response.status(updated? 204 : 400).end()
+})
 
 usersRouter.delete('/:id', validateId, verifyUser, checkRole('admin'), async (request, response) => {
     const id = +request.params.id

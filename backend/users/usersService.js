@@ -40,7 +40,19 @@ const updateUser = async user => {
     return modified > 0
 }
 
-
+const changeUser = async user => {
+    const [, modified] = await db.query(`
+    UPDATE usuarios SET
+        username = :username,
+        address = :address,
+        email = :email
+    WHERE id = :id
+    `, {
+        type: db.QueryTypes.UPDATE,
+        replacements: user
+    })
+    return modified > 0
+}
 
 const addUser = async ({ username, address, email, password }) => {
     const salt = await bcrypt.genSalt(10);
@@ -90,6 +102,7 @@ module.exports = {
     getAllUsers,
     getUser,
     updateUser,
+    changeUser,
     addUser,
     deleteUser
 }
