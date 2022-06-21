@@ -33,6 +33,12 @@ export const CommentCard = ({
     );
   }, [articleID, commentID]);
 
+  const refreshReplies = () => {
+    fetchReplies(articleID, commentID).then((replies) =>
+      setReplies(replies.reverse())
+    );
+  };
+
   const updateComment = async (event) => {
     event.preventDefault();
     try {
@@ -114,7 +120,7 @@ export const CommentCard = ({
               <ReplyBox
                 articleID={articleID}
                 commentID={commentID}
-                refreshComments={refreshComments}
+                refreshReplies={refreshReplies}
               />
             </Card.Body>
           </>
@@ -123,7 +129,7 @@ export const CommentCard = ({
           <Row key={id}>
             <Col md={{ span: 9, offset: 3 }}>
               <ReplyCard
-                refreshComments={refreshComments}
+                refreshReplies={refreshReplies}
                 commentID={commentID}
                 articleID={articleID}
                 replyUserName={replyUserName}

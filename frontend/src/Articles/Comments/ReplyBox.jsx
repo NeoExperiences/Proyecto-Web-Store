@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button, Container, Form } from "react-bootstrap";
 import { useTextInput } from "../../SharedHooks/customHooks";
 
-export const ReplyBox = ({ articleID, commentID, refreshComments }) => {
+export const ReplyBox = ({ articleID, commentID, refreshReplies }) => {
   const [userReply, setReply] = useTextInput("");
   const [enableReplyBox, setEnableReplyBox] = useState(false);
   const submitReply = async (event) => {
@@ -21,7 +21,7 @@ export const ReplyBox = ({ articleID, commentID, refreshComments }) => {
       );
       if (response.ok) {
         toggleBox();
-        refreshComments();
+        refreshReplies();
       }
     } catch (error) {
       console.log("error", error);
@@ -47,6 +47,7 @@ export const ReplyBox = ({ articleID, commentID, refreshComments }) => {
             />
             <Form.Control className="nt-3" type="submit" />
           </Form.Group>
+          <Button onClick={toggleBox}>Cerrar</Button>
         </Form>
       ) : (
         <Container>

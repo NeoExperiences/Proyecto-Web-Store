@@ -40,7 +40,7 @@ const deleteReply = async id => {
 const updateReply = async reply => {
     try{
         const [, modified] = await db.query(`
-            UPDATE comentarios SET
+            UPDATE respuestas SET
                 userReply = :userReply
             WHERE id = :id
         `, {

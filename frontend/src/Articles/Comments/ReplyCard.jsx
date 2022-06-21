@@ -13,7 +13,7 @@ export const ReplyCard = ({
   replyUserName,
   userReply,
   userID,
-  refreshComments,
+  refreshReplies,
   articleID,
   commentID,
   replyID,
@@ -26,7 +26,7 @@ export const ReplyCard = ({
 
   const updateReply = async (event) => {
     event.preventDefault();
-    console.log("HEEEEEERE");
+
     try {
       const response = await fetch(
         `http://localhost:5000/articles/${articleID}/comments/${commentID}/replies/${replyID}`,
@@ -41,7 +41,7 @@ export const ReplyCard = ({
       );
       if (response.ok) {
         toggleEdit();
-        refreshComments();
+        refreshReplies();
       }
     } catch (error) {
       console.log("error", error);
@@ -62,7 +62,7 @@ export const ReplyCard = ({
       );
       if (response.ok) {
         console.log("Successful Deletion.");
-        refreshComments();
+        refreshReplies();
       }
     } catch (error) {
       console.log("error", error);
@@ -88,6 +88,7 @@ export const ReplyCard = ({
               />
               <Form.Control className="nt-3" type="submit" />
             </Form.Group>
+            <Button onClick={toggleEdit}>Cerrar</Button>
           </Form>
         ) : (
           <>
