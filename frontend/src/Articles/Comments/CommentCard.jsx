@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, Col, Row } from "react-bootstrap";
+import { Button, Col, Image, Row } from "react-bootstrap";
 import { Form } from "react-bootstrap";
 import { Container } from "react-bootstrap";
 import { Card } from "react-bootstrap";
@@ -20,6 +20,7 @@ export const CommentCard = ({
   articleID,
   commentID,
   commentDate,
+  userPicture,
 }) => {
   const [enableEdit, setEnableEdit] = useState(false);
   const [editedComment, setEditedComment] = useTextInput(userComment);
@@ -28,15 +29,11 @@ export const CommentCard = ({
   const [replies, setReplies] = useState([]);
 
   useEffect(() => {
-    fetchReplies(articleID, commentID).then((replies) =>
-      setReplies(replies.reverse())
-    );
+    fetchReplies(articleID, commentID).then((replies) => setReplies(replies));
   }, [articleID, commentID]);
 
   const refreshReplies = () => {
-    fetchReplies(articleID, commentID).then((replies) =>
-      setReplies(replies.reverse())
-    );
+    fetchReplies(articleID, commentID).then((replies) => setReplies(replies));
   };
 
   const updateComment = async (event) => {
@@ -90,7 +87,7 @@ export const CommentCard = ({
 
   return (
     <Container>
-      <Card border="light">
+      <Card border="light" className="comment-card-properties">
         {enableEdit ? (
           <Form onSubmit={updateComment}>
             <Form.Group className="mb-3">
@@ -102,12 +99,23 @@ export const CommentCard = ({
               />
               <Form.Control className="nt-3" type="submit" />
             </Form.Group>
+            <Button onClick={toggleEdit}>Cerrar</Button>
           </Form>
         ) : (
           <>
             <Card.Header>
+              <Container className="container-embolden">
+                <Image
+                  className="avatar-aspect-ratio"
+                  src={userPicture}
+                  roundedCircle={true}
+                  width="40"
+                  height="40"
+                  alt="Missing user avatar."
+                />{" "}
+                {userName} dice:
+              </Container>
               <Container>{commentDate}</Container>
-              {userName} dice:
               {(isAdmin || originalCommenter) && (
                 <Container>
                   <Button onClick={toggleEdit}>Editar</Button>
@@ -125,9 +133,11 @@ export const CommentCard = ({
             </Card.Body>
           </>
         )}
-        {replies.map(({ id, replyUserName, userID, userReply, replyDate }) => (
+      </Card>
+      {replies.map(
+        ({ id, replyUserName, userID, userReply, replyDate, userPicture }) => (
           <Row key={id}>
-            <Col md={{ span: 9, offset: 3 }}>
+            <Col md={{ span: 9, offset: 3 }} className="reply-border">
               <ReplyCard
                 refreshReplies={refreshReplies}
                 commentID={commentID}
@@ -137,11 +147,12 @@ export const CommentCard = ({
                 userReply={userReply}
                 replyDate={replyDate}
                 replyID={id}
+                userPicture={userPicture}
               ></ReplyCard>
             </Col>
           </Row>
-        ))}
-      </Card>
+        )
+      )}
     </Container>
   );
 };

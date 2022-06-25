@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  background-color: #F4F4F4;
 }
 
 .App-logo {
@@ -11,6 +12,23 @@
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
   }
+}
+
+.elmedioamarillo {
+  background-color: #FFC017;
+  color: #080808;
+  font-family: Georgia, Cambria, "Times New Roman", Times, serif;
+  font-weight: 1000;
+  font-size: 1.1em;
+}
+
+.signout-button {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+.avatar-aspect-ratio {
+  aspect-ratio: auto 20 / 20;
 }
 
 .App-header {
@@ -41,4 +59,56 @@
 .text-content-wrap {
   inline-size: 100%;
   overflow-wrap: break-word;
+}
+
+.fixed-column {
+  height: auto;
+  width: 18em;
+  position: fixed;
+  right: auto;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+.fixed-create-article {
+  height: auto;
+  width: 18em;
+  position: fixed;
+  right: auto;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+  margin-top: 13em;
+  margin-bottom: 0.5em;
+}
+
+.article-card-shadow {
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+}
+
+.comment-card-properties{
+ font-family: Georgia, Cambria, "Times New Roman", Times, serif;
+ box-shadow: 5px 5px 3px rgb(0 0 0 / 20%), 5px 7px 7px rgb(0 0 0 / 10%);
+}
+
+.reply-card-properties{
+  font-family: Georgia, Cambria, "Times New Roman", Times, serif;
+ box-shadow: 5px 5px 3px rgb(0 0 0 / 20%), 5px 7px 7px rgb(0 0 0 / 10%);
+}
+
+.reply-border{
+  border-left:3px solid rgba(0, 0, 0, 0.13);
+}
+
+.container-comments-removepadding{
+  padding-right: 1em;
+  padding-left: 1em;
+}
+
+.container-reply-removepadding{
+  padding-right: 0;
+  padding-left: 0;
+}
+
+.container-embolden{
+font-weight: 1000;
 }

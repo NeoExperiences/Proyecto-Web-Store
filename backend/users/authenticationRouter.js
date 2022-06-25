@@ -4,10 +4,11 @@ const jwtSecret = process.env.JWT_SECRET
 
 const {
     registerUser,
+    adquireUserData,
     checkCredentials
 } = require('./authenticationService'); 
 
-const { setUserInfo } = require('../shared/middlewares');
+const { verifyUserToken } = require('../shared/middlewares');
 
 authenticationRouter.post('/register', async (request, response) => {
     const { username, email, address, password } = request.body
@@ -40,9 +41,11 @@ authenticationRouter.post('/login', async (request, response) => {
         response.status(401).send('Invalid credentials')
 })
 
-authenticationRouter.get('/userprofile', setUserInfo, async (request, response) => {
-    if(request.userInfo) {
-        response.status(200).json(request.userInfo)
+authenticationRouter.get('/userprofile', verifyUserToken, async (request, response) => {
+    const {id} = request.userToken
+    const retrievedUserData = await adquireUserData(id)
+    if(retrievedUserData) {
+        response.status(200).json(retrievedUserData)
     } else
         response.status(401).send('Invalid credentials')
 

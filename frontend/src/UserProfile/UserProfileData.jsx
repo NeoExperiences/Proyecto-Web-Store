@@ -1,7 +1,6 @@
-import { Button, Form, Row } from "react-bootstrap";
+import { Button, Form, Image, Row } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { useTextInput } from "../SharedHooks/customHooks";
 import { UserProfileEdit } from "./UserProfileEdit";
 
 export const UserProfileData = () => {
@@ -43,16 +42,22 @@ export const UserProfileData = () => {
           userName={userData.username}
           email={userData.email}
           address={userData.address}
+          picture={userData.picture}
         />
       ) : (
         <div className="mb-5 mt-5" lg="2" sm="4">
-          <div>Nombre del Usuario: {userData.username}</div>
-          <div>Email: {userData.email}</div>
-          <div>Direccion: {userData.address}</div>
           <Button onClick={toggleEdit}>Editar Datos</Button>
           <Link to={"/Articles"}>
             <Button>Volver</Button>
           </Link>
+          <div>Nombre del Usuario: {userData.username}</div>
+          <div>Email: {userData.email}</div>
+          <div>Direccion: {userData.address}</div>
+          <Image
+            className="avatar-aspect-ratio"
+            src={userData.picture}
+            alt="Missing User Avatar."
+          />
         </div>
       )}
     </Row>

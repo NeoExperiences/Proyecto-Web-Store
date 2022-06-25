@@ -36,23 +36,27 @@ export const UsersData = () => {
               <th>Username</th>
               <th>Email</th>
               <th>Address</th>
+              <th>Picture</th>
               <th>Role</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-            {users.map(({ id, username, email, address, role, roleName }) => (
-              <UserRow
-                key={id}
-                id={id}
-                username={username}
-                email={email}
-                address={address}
-                roleName={roleName}
-                role={role}
-                refreshUsers={refreshUsers}
-              />
-            ))}
+            {users.map(
+              ({ id, username, email, address, role, roleName, picture }) => (
+                <UserRow
+                  key={id}
+                  id={id}
+                  username={username}
+                  email={email}
+                  address={address}
+                  roleName={roleName}
+                  role={role}
+                  picture={picture}
+                  refreshUsers={refreshUsers}
+                />
+              )
+            )}
           </tbody>
         </Table>
       )}

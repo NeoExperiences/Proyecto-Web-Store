@@ -28,10 +28,18 @@ export const CommentList = () => {
         refreshComments={refreshComments}
       ></CommentBox>
       {comments.map(
-        ({ userName, userID, userComment, commentID, commentDate }) => (
+        ({
+          userName,
+          userID,
+          userComment,
+          commentID,
+          commentDate,
+          userPicture,
+        }) => (
           <Row key={commentID}>
             <Col className="mb-1 mt-1">
               <CommentCard
+                classname="reply-rule"
                 refreshComments={refreshComments}
                 commentID={commentID}
                 articleID={articleID}
@@ -39,6 +47,7 @@ export const CommentList = () => {
                 userID={userID}
                 userComment={userComment}
                 commentDate={commentDate}
+                userPicture={userPicture}
               ></CommentCard>
             </Col>
           </Row>

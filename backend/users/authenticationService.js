@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt')
 const { db } = require('../db/connect')
 
-const { addUser } = require('./usersService')
+const { addUser, getUser } = require('./usersService')
 
 const checkCredentials = async ({ username, password }) => {
     const [user] = await db.query(`
@@ -19,5 +19,6 @@ const checkCredentials = async ({ username, password }) => {
 
 module.exports = {
     registerUser: addUser,
+    adquireUserData: getUser,
     checkCredentials
 }

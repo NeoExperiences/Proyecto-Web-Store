@@ -1,6 +1,6 @@
 const commentsRouter = require('express').Router()
 
-const { setUserInfo, validateId } = require('../../shared/middlewares');
+const { verifyUserToken, validateId } = require('../../shared/middlewares');
 
 const {
     // getAllComments,
@@ -26,9 +26,9 @@ commentsRouter.get('/', async (request, response) => {
     }
 })
 
-commentsRouter.post('/', setUserInfo, async (request, response) => {
+commentsRouter.post('/', verifyUserToken, async (request, response) => {
     const date = new Date()
-    const commentRequest = {userComment:request.body.userComment, userID:request.userInfo.id, postID:request.postID, commentDate:date}
+    const commentRequest = {userComment:request.body.userComment, userID:request.userToken.id, postID:request.postID, commentDate:date}
     const {createdComment, error} = await addComment(commentRequest)
     if(createdComment) {
         response.status(200).json(createdComment)

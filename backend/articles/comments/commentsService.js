@@ -2,7 +2,7 @@ const { db } = require('../../db/connect')
 
 const getAllComments = async () => {
     return await db.query(`
-        SELECT comment.postID, comment.userID, comment.userComment, user.id
+        SELECT comment.postID, comment.userID, comment.userComment, user.id, user.picture as userPicture
         FROM comentarios comment
         JOIN usuarios user ON comment.userID = user.id
         JOIN articulos post ON comment.postID = post.id
@@ -14,7 +14,7 @@ const getAllComments = async () => {
 const getPostComments = async articleid => {
     try{
         const comments = await db.query(`
-            SELECT comment.postID, comment.userID, comment.userComment, users.username as userName, comment.id as commentID, comment.commentDate
+            SELECT comment.postID, comment.userID, comment.userComment, users.username as userName, comment.id as commentID, comment.commentDate, users.picture as userPicture
             FROM comentarios comment
             JOIN usuarios users ON comment.userID = users.id
             WHERE comment.postID = :articleid

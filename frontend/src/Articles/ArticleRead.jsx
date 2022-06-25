@@ -128,7 +128,11 @@ export const ArticleRead = () => {
                 </Row>
                 <Row>
                   <Col>
-                    <Image src={article?.picture} roundedCircle={true} alt="" />
+                    <Image
+                      src={article?.userPicture}
+                      roundedCircle={true}
+                      alt=""
+                    />
                   </Col>
                 </Row>
                 <Row className="text-content-wrap mt-3">

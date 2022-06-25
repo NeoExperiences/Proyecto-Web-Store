@@ -62,42 +62,90 @@ export function App() {
 
   return (
     <div className="App">
-      <Navbar bg="primary" variant="dark">
+      <style type="text/css">
+        {`
+    .btn-signout {
+      background-color: black;
+      color: white;
+    }
+    `}
+      </style>
+      <Navbar className="elmedioamarillo">
         <Container>
           {userToken ? (
             <>
-              <Navbar.Brand as={Link} to={"/Articles"}>
-                Navbar
+              <Navbar.Brand
+                className="elmedioamarillo"
+                as={Link}
+                to={"/Articles"}
+              >
+                <img src="https://i.imgur.com/31D5vPD.png"></img>
               </Navbar.Brand>
               <Nav className="me-auto">
-                <Nav.Link as={Link} to={"/Articles"}>
+                <Nav.Link
+                  className="elmedioamarillo"
+                  style={{ color: "black" }}
+                  as={Link}
+                  to={"/Articles"}
+                >
                   Home
                 </Nav.Link>
                 {isAdmin && (
-                  <Nav.Link as={Link} to={"/Users"}>
-                    Administrator Panel
+                  <Nav.Link
+                    className="elmedioamarillo"
+                    style={{ color: "black" }}
+                    as={Link}
+                    to={"/Users"}
+                  >
+                    Panel de Administracion
                   </Nav.Link>
                 )}
               </Nav>
               <Nav>
-                <Nav.Link as={Link} to={"/Profile"}>
+                <Nav.Link
+                  as={Link}
+                  to={"/Profile"}
+                  className="elmedioamarillo"
+                  style={{ color: "black" }}
+                >
                   {userData.username}
                 </Nav.Link>
               </Nav>
               <Nav>
-                <Nav.Link as={Button} onClick={signOut}>
+                <Nav.Link
+                  as={Button}
+                  onClick={signOut}
+                  variant="signout"
+                  style={{ color: "white", fontSize: "1.1em" }}
+                >
                   Deslogearse
                 </Nav.Link>
               </Nav>
             </>
           ) : (
             <>
-              <Navbar.Brand>Navbar</Navbar.Brand>
+              <Navbar.Brand
+                className="elmedioamarillo"
+                as={Link}
+                to={"/Articles"}
+              >
+                <img src="https://i.imgur.com/31D5vPD.png"></img>
+              </Navbar.Brand>
               <Nav>
-                <Nav.Link as={Link} to={"/Login"}>
+                <Nav.Link
+                  as={Link}
+                  to={"/Login"}
+                  className="elmedioamarillo"
+                  style={{ color: "black" }}
+                >
                   Logearse
                 </Nav.Link>
-                <Nav.Link as={Link} to={"/Register"}>
+                <Nav.Link
+                  as={Link}
+                  to={"/Register"}
+                  style={{ color: "black" }}
+                  className="elmedioamarillo"
+                >
                   Registrarse
                 </Nav.Link>
               </Nav>

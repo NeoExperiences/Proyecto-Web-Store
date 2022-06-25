@@ -2,7 +2,7 @@ const { db } = require('../db/connect')
 
 const getAllArticles = async () => {
     return await db.query(`
-        SELECT artic.id, artic.postName, artic.postContent, artic.picture, user.username as userName, artic.postDate, cat.name as categoryName, cat.id as categoryID
+        SELECT artic.id, artic.postName, artic.postContent, artic.picture, user.username as userName, user.picture as userPicture, artic.postDate, cat.name as categoryName, cat.id as categoryID
         FROM articulos artic
         JOIN usuarios user ON artic.userID = user.id
         JOIN categorias cat ON artic.postCategory = cat.id
@@ -13,7 +13,7 @@ const getAllArticles = async () => {
 
 const getArticle = async id => {
     const [article] = await db.query(`
-    SELECT artic.id, artic.postName, artic.postContent, artic.picture, user.username as userName, artic.userid, artic.postDate, cat.name as categoryName, cat.id as categoryID
+    SELECT artic.id, artic.postName, artic.postContent, artic.picture, user.username as userName, user.picture as userPicture, artic.userid, artic.postDate, cat.name as categoryName, cat.id as categoryID
     FROM articulos artic
     JOIN usuarios user ON artic.userID = user.id
     JOIN categorias cat ON artic.postCategory = cat.id

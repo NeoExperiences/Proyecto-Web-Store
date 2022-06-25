@@ -7,10 +7,10 @@ const validateId = (request, response, next) => {
     else next()
 }
 
-const setUserInfo = (request, response, next) => {
+const verifyUserToken = (request, response, next) => {
     try {
-        request.userInfo = jwt.verify(request.headers.authorization.split(' ')[1], jwtSecret)
-        if ((Date.now() - request.userInfo.iat * 1000) < 2000000000)
+        request.userToken = jwt.verify(request.headers.authorization.split(' ')[1], jwtSecret)
+        if ((Date.now() - request.userToken.iat * 1000) < 2000000000)
             next()
         else(
             response.status(401).end()
@@ -35,4 +35,4 @@ const checkRole = role => {
     }
 }
 
-module.exports = { validateId, setUserInfo, checkRole }
+module.exports = { validateId, verifyUserToken, checkRole }

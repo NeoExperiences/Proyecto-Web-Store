@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button } from "react-bootstrap";
+import { Button, Image } from "react-bootstrap";
 import { Form } from "react-bootstrap";
 import { Container } from "react-bootstrap";
 import { Card } from "react-bootstrap";
@@ -18,6 +18,7 @@ export const ReplyCard = ({
   commentID,
   replyID,
   replyDate,
+  userPicture,
 }) => {
   const [enableEdit, setEnableEdit] = useState(false);
   const [editedReply, setEditedReply] = useTextInput(userReply);
@@ -75,10 +76,15 @@ export const ReplyCard = ({
   };
 
   return (
-    <Container>
-      <Card border="light">
+    <Container className="container-reply-removepadding">
+      <Card border="light" className="reply-card-properties">
         {enableEdit ? (
           <Form onSubmit={updateReply}>
+            <Container className="container-embolden">
+              {replyUserName} responde:
+            </Container>
+            <Container>{replyDate}</Container>
+            <Button onClick={toggleEdit}>Cerrar</Button>
             <Form.Group className="mb-3">
               <Form.Control
                 as="textarea"
@@ -88,13 +94,22 @@ export const ReplyCard = ({
               />
               <Form.Control className="nt-3" type="submit" />
             </Form.Group>
-            <Button onClick={toggleEdit}>Cerrar</Button>
           </Form>
         ) : (
           <>
             <Card.Header>
+              <Container className="container-embolden">
+                <Image
+                  className="avatar-aspect-ratio"
+                  src={userPicture}
+                  roundedCircle={true}
+                  width="40"
+                  height="40"
+                  alt="Missing user avatar."
+                />{" "}
+                {replyUserName} responde:
+              </Container>
               <Container>{replyDate}</Container>
-              {replyUserName} responde:
               {(isAdmin || originalCommenter) && (
                 <Container>
                   <Button onClick={toggleEdit}>Editar</Button>

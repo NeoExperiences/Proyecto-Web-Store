@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Form } from "react-bootstrap";
+import { Form, Image } from "react-bootstrap";
 import { Button } from "react-bootstrap";
 import { useTextInput } from "../SharedHooks/customHooks";
 
@@ -10,17 +10,20 @@ export const UserRow = ({
   address,
   roleName,
   role,
+  picture,
   refreshUsers,
 }) => {
   const [editedUsername, setEditedUsername] = useTextInput(username);
   const [editedEmail, setEditedEmail] = useTextInput(email);
   const [editedAddress, setEditedAddress] = useTextInput(address);
+  const [editedPicture, setEditedPicture] = useTextInput(picture);
   const [editedRole, setEditedRole] = useTextInput(role);
   const [enableEdit, setEnableEdit] = useState(false);
   const valuesHaveChanged =
     username !== editedUsername ||
     email !== editedEmail ||
     address !== editedAddress ||
+    picture !== editedPicture ||
     role !== +editedRole;
 
   const submitDeleteUser = (id) => {
@@ -34,7 +37,7 @@ export const UserRow = ({
         });
 
         if (response.ok) {
-          console.log("Deletion Complete");
+          refreshUsers();
         } else {
           throw await response.text();
         }
@@ -54,6 +57,7 @@ export const UserRow = ({
           username: editedUsername,
           email: editedEmail,
           address: editedAddress,
+          picture: editedPicture,
           role: editedRole,
         }),
       });
@@ -103,6 +107,23 @@ export const UserRow = ({
             type="text"
             onChange={setEditedAddress}
             value={editedAddress}
+          />
+        )}
+      </td>
+      <td>
+        {!enableEdit ? (
+          <Image
+            src={picture}
+            roundedCircle={true}
+            width="40"
+            height="40"
+            alt="missing picture"
+          />
+        ) : (
+          <Form.Control
+            type="text"
+            onChange={setEditedPicture}
+            value={editedPicture}
           />
         )}
       </td>

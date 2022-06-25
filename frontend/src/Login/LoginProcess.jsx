@@ -44,7 +44,8 @@ export const Login = ({ setToken, originalPath }) => {
         <Form.Control
           onChange={setPassword}
           value={password}
-          type="text"
+          type="password"
+          id="inputPassword5"
           placeholder="********"
         />
         <Form.Control className="nt-3" type="submit" />

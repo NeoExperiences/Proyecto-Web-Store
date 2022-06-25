@@ -14,7 +14,7 @@ const { db } = require('../../../db/connect')
 const getCommentReplies = async commentid => {
     try{
         const replies = await db.query(`
-            SELECT reply.id, reply.postID, reply.userID, reply.commentID, reply.userReply, users.username as replyUserName, reply.replyDate
+            SELECT reply.id, reply.postID, reply.userID, reply.commentID, reply.userReply, users.username as replyUserName, reply.replyDate, users.picture as userPicture
             FROM respuestas reply
             JOIN usuarios users ON reply.userID = users.id
             WHERE reply.commentID = :commentid

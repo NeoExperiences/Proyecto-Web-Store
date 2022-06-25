@@ -4,7 +4,7 @@ const { db } = require('../db/connect')
 const getAllUsers = async () => {
     // return await db.models.User.findAll({ raw: true })
     return await db.query(`
-        SELECT users.id, users.username, users.address, users.email, users.role, roles.name as roleName
+        SELECT users.id, users.username, users.address, users.email, users.role, roles.name as roleName, users.picture
         FROM usuarios users
         JOIN roles ON users.role = roles.id
     `, {
@@ -14,7 +14,7 @@ const getAllUsers = async () => {
 
 const getUser = async id => {
     const [user] = await db.query(`
-    SELECT users.id, users.username, users.address, users.email, roles.name as roleName
+    SELECT users.id, users.username, users.address, users.email, roles.name as roleName, users.picture
     FROM usuarios users
     JOIN roles ON users.role = roles.id
     WHERE users.id = :id
@@ -26,18 +26,24 @@ const getUser = async id => {
 }
 
 const updateUser = async user => {
+    try {
     const [, modified] = await db.query(`
     UPDATE usuarios SET
         username = :username,
         address = :address,
         email = :email,
-        role = :role
+        role = :role,
+        picture = :picture
     WHERE id = :id
     `, {
         type: db.QueryTypes.UPDATE,
         replacements: user
     })
     return modified > 0
+    } catch(error) {
+        console.log(error)
+        return { error }
+    }
 }
 
 const changeUser = async user => {
@@ -45,7 +51,8 @@ const changeUser = async user => {
     UPDATE usuarios SET
         username = :username,
         address = :address,
-        email = :email
+        email = :email,
+        picture = :picture
     WHERE id = :id
     `, {
         type: db.QueryTypes.UPDATE,
@@ -62,12 +69,13 @@ const addUser = async ({ username, address, email, password }) => {
         address,
         email,
         role:2,
+        picture:"https://i.imgur.com/EvkyjiU.png",
         password: hash
     }
     try {
         const [id] = await db.query(`
-        INSERT INTO usuarios (username, address, email, role, password) VALUES
-            (:username, :address, :email, :role, :password)
+        INSERT INTO usuarios (username, address, email, role, password, picture) VALUES
+            (:username, :address, :email, :role, :password, :picture)
         `, {
             replacements: user
         })
@@ -81,7 +89,26 @@ const addUser = async ({ username, address, email, password }) => {
 
 const deleteUser = async id => {
     await db.query(`
+        DELETE FROM respuestas WHERE userID = :id;
+    `, {
+        replacements: { id }
+    })
+    await db.query(`
+        DELETE respuestas FROM respuestas
+        JOIN comentarios comments ON respuestas.commentID = comments.id
+        WHERE comments.userID = :id;
+    `, {
+        replacements: { id }
+    })
+    await db.query(`
         DELETE FROM comentarios WHERE userID = :id;
+    `, {
+        replacements: { id }
+    })
+    await db.query(`
+        DELETE comentarios FROM comentarios
+        JOIN articulos artic ON comentarios.postID = artic.id
+        WHERE comentarios.userID = :id;
     `, {
         replacements: { id }
     })

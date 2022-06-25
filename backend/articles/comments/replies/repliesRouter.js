@@ -1,6 +1,6 @@
 const repliesRouter = require('express').Router()
 
-const { setUserInfo, validateId } = require('../../../shared/middlewares');
+const { verifyUserToken, validateId } = require('../../../shared/middlewares');
 
 const {
     // getAllComments,
@@ -24,9 +24,9 @@ repliesRouter.get('/', async (request, response) => {
     }
 })
 
-repliesRouter.post('/', setUserInfo, async (request, response) => {
+repliesRouter.post('/', verifyUserToken, async (request, response) => {
     const date = new Date()
-    const replyRequest = {userReply:request.body.userReply, userID:request.userInfo.id, postID:request.postID, replyDate:date, commentID:request.commentID}
+    const replyRequest = {userReply:request.body.userReply, userID:request.userToken.id, postID:request.postID, replyDate:date, commentID:request.commentID}
     const {createdReply, error} = await addReply(replyRequest)
     if(createdReply) {
         response.status(200).json(createdReply)

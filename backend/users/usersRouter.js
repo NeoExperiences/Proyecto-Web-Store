@@ -33,13 +33,14 @@ usersRouter.get('/:id', validateId, async (request, response) => {
 
 usersRouter.put('/:id', validateId, verifyUser, checkRole('admin'), async (request, response) => {
     const id = +request.params.id
-    const { username, address, email, role } = request.body
+    const { username, address, email, role, picture } = request.body
     const user = {
         id,
         username,
         address,
         email,
         role,
+        picture
     }
     const updated = await updateUser(user)
     response.status(updated? 204 : 400).end()
@@ -47,12 +48,13 @@ usersRouter.put('/:id', validateId, verifyUser, checkRole('admin'), async (reque
 
 usersRouter.put('/change/:id', validateId, verifyUser, async (request, response) => {
     const id = +request.params.id
-    const { username, address, email} = request.body
+    const { username, address, email, picture} = request.body
     const user = {
         id,
         username,
         address,
         email,
+        picture
     }
     const updated = await changeUser(user)
     response.status(updated? 204 : 400).end()

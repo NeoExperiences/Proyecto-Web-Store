@@ -59,166 +59,206 @@ export const ArticleList = () => {
   };
 
   return (
-    <Container fluid>
-      {isAdmin && (
-        <Link to={"/Post"}>
-          <Button>Crear Articulo</Button>
-        </Link>
-      )}
-      {enableFilterByAuthor && (
-        <Row>
-          <Col>
-            <Filter
-              filter={filterByAuthor}
-              setFilter={setFilterByAuthor}
-              placeholder="Autor:"
-            />
-          </Col>
-        </Row>
-      )}
-      {enableFilterByTitle && (
-        <Row>
-          <Col>
-            <Filter
-              filter={filterByTitle}
-              setFilter={setFilterByTitle}
-              placeholder="Nombre del Articulo:"
-            />
-          </Col>
-        </Row>
-      )}
+    <Container>
       <Row>
-        <Col md={{ span: 3, offset: 9 }}>
-          <Card border="light">
+        <Col>
+          <Row padding-right="0">
+            {!enableFilterByAuthor &&
+              !enableFilterByCategory &&
+              !enableFilterByTitle && (
+                <>
+                  {articleList.map(
+                    ({
+                      id,
+                      userName,
+                      postName,
+                      picture,
+                      postDate,
+                      categoryName,
+                      userPicture,
+                      postContent,
+                    }) => (
+                      <Col className="mb-2 mt-2" key={id} lg="12" sm="12">
+                        <ArticleCard
+                          id={id}
+                          userName={userName}
+                          postContent={postContent}
+                          postName={postName}
+                          picture={picture}
+                          postDate={postDate}
+                          categoryName={categoryName}
+                          userPicture={userPicture}
+                        />
+                      </Col>
+                    )
+                  )}
+                </>
+              )}
+            {enableFilterByAuthor &&
+              !enableFilterByCategory &&
+              !enableFilterByTitle && (
+                <>
+                  {filteredByAuthor.map(
+                    ({
+                      id,
+                      userName,
+                      postName,
+                      picture,
+                      postDate,
+                      categoryName,
+                      userPicture,
+                      postContent,
+                    }) => (
+                      <Col className="mb-5 mt-5" key={id} lg="12" sm="12">
+                        <ArticleCard
+                          id={id}
+                          userName={userName}
+                          postName={postName}
+                          postContent={postContent}
+                          picture={picture}
+                          postDate={postDate}
+                          categoryName={categoryName}
+                          userPicture={userPicture}
+                        />
+                      </Col>
+                    )
+                  )}
+                </>
+              )}
+            {enableFilterByCategory &&
+              !enableFilterByAuthor &&
+              !enableFilterByTitle && (
+                <>
+                  {filteredByCategory.map(
+                    ({
+                      id,
+                      userName,
+                      postName,
+                      picture,
+                      postDate,
+                      categoryName,
+                      userPicture,
+                      postContent,
+                    }) => (
+                      <Col className="mb-5 mt-5" key={id} lg="12" sm="12">
+                        <ArticleCard
+                          id={id}
+                          userName={userName}
+                          postName={postName}
+                          postContent={postContent}
+                          picture={picture}
+                          postDate={postDate}
+                          categoryName={categoryName}
+                          userPicture={userPicture}
+                        />
+                      </Col>
+                    )
+                  )}
+                </>
+              )}
+            {!enableFilterByCategory &&
+              !enableFilterByAuthor &&
+              enableFilterByTitle && (
+                <>
+                  {filteredByTitle.map(
+                    ({
+                      id,
+                      userName,
+                      postName,
+                      postContent,
+                      picture,
+                      postDate,
+                      categoryName,
+                      userPicture,
+                    }) => (
+                      <Col className="mb-5 mt-5" key={id} lg="12" sm="12">
+                        <ArticleCard
+                          id={id}
+                          userName={userName}
+                          postName={postName}
+                          postContent={postContent}
+                          picture={picture}
+                          postDate={postDate}
+                          categoryName={categoryName}
+                          userPicture={userPicture}
+                        />
+                      </Col>
+                    )
+                  )}
+                </>
+              )}
+          </Row>
+        </Col>
+        <Col xs lg="3">
+          <Card className="fixed-column" border="light" lg="12" sm="12">
             <Card.Header>Filtrar por:</Card.Header>
             <Card.Body>
-              {!enableFilterByCategory && !enableFilterByTitle && (
-                <Button onClick={toggleFilterByAuthor}>Autor</Button>
+              <Row>
+                {!enableFilterByCategory && !enableFilterByTitle && (
+                  <Button onClick={toggleFilterByAuthor}>Autor</Button>
+                )}
+              </Row>
+              <Row>
+                {!enableFilterByAuthor && !enableFilterByCategory && (
+                  <Button onClick={toggleFilterByTitle}>Titulo</Button>
+                )}
+              </Row>
+              <Row>
+                {!enableFilterByAuthor && !enableFilterByTitle && (
+                  <Button onClick={toggleFilterByCategory}>Categoria</Button>
+                )}
+              </Row>
+              <Row>
+                {enableFilterByCategory && (
+                  <FilterByCategory
+                    filter={categoryFilter}
+                    setFilter={setCategoryFilter}
+                    categoryList={categoryList}
+                  />
+                )}
+              </Row>
+              {enableFilterByAuthor && (
+                <Row>
+                  <Col>
+                    <Filter
+                      filter={filterByAuthor}
+                      setFilter={setFilterByAuthor}
+                      placeholder="Autor:"
+                    />
+                  </Col>
+                </Row>
               )}
-              {!enableFilterByAuthor && !enableFilterByTitle && (
-                <Button onClick={toggleFilterByCategory}>Categoria</Button>
-              )}
-              {!enableFilterByAuthor && !enableFilterByCategory && (
-                <Button onClick={toggleFilterByTitle}>Titulo</Button>
-              )}
-              {enableFilterByCategory && (
-                <FilterByCategory
-                  filter={categoryFilter}
-                  setFilter={setCategoryFilter}
-                  categoryList={categoryList}
-                />
+              {enableFilterByTitle && (
+                <Row>
+                  <Col>
+                    <Filter
+                      filter={filterByTitle}
+                      setFilter={setFilterByTitle}
+                      placeholder="Nombre del Articulo:"
+                    />
+                  </Col>
+                </Row>
               )}
             </Card.Body>
           </Card>
+
+          {isAdmin && (
+            <Card
+              className="fixed-create-article"
+              border="light"
+              lg="12"
+              sm="12"
+            >
+              <Card.Body>
+                <Link to={"/Post"}>
+                  <Row>
+                    <Button>Crear Articulo</Button>
+                  </Row>
+                </Link>
+              </Card.Body>
+            </Card>
+          )}
         </Col>
-        {!enableFilterByAuthor &&
-          !enableFilterByCategory &&
-          !enableFilterByTitle && (
-            <>
-              {articleList.map(
-                ({
-                  id,
-                  userName,
-                  postName,
-                  picture,
-                  postDate,
-                  categoryName,
-                }) => (
-                  <Col className="mb-5 mt-5" key={id} lg="8" sm="12">
-                    <ArticleCard
-                      id={id}
-                      userName={userName}
-                      postName={postName}
-                      picture={picture}
-                      postDate={postDate}
-                      categoryName={categoryName}
-                    />
-                  </Col>
-                )
-              )}
-            </>
-          )}
-        {enableFilterByAuthor &&
-          !enableFilterByCategory &&
-          !enableFilterByTitle && (
-            <>
-              {filteredByAuthor.map(
-                ({
-                  id,
-                  userName,
-                  postName,
-                  picture,
-                  postDate,
-                  categoryName,
-                }) => (
-                  <Col className="mb-5 mt-5" key={id} lg="8" sm="12">
-                    <ArticleCard
-                      id={id}
-                      userName={userName}
-                      postName={postName}
-                      picture={picture}
-                      postDate={postDate}
-                      categoryName={categoryName}
-                    />
-                  </Col>
-                )
-              )}
-            </>
-          )}
-        {enableFilterByCategory &&
-          !enableFilterByAuthor &&
-          !enableFilterByTitle && (
-            <>
-              {filteredByCategory.map(
-                ({
-                  id,
-                  userName,
-                  postName,
-                  picture,
-                  postDate,
-                  categoryName,
-                }) => (
-                  <Col className="mb-5 mt-5" key={id} lg="8" sm="12">
-                    <ArticleCard
-                      id={id}
-                      userName={userName}
-                      postName={postName}
-                      picture={picture}
-                      postDate={postDate}
-                      categoryName={categoryName}
-                    />
-                  </Col>
-                )
-              )}
-            </>
-          )}
-        {!enableFilterByCategory &&
-          !enableFilterByAuthor &&
-          enableFilterByTitle && (
-            <>
-              {filteredByTitle.map(
-                ({
-                  id,
-                  userName,
-                  postName,
-                  picture,
-                  postDate,
-                  categoryName,
-                }) => (
-                  <Col className="mb-5 mt-5" key={id} lg="8" sm="12">
-                    <ArticleCard
-                      id={id}
-                      userName={userName}
-                      postName={postName}
-                      picture={picture}
-                      postDate={postDate}
-                      categoryName={categoryName}
-                    />
-                  </Col>
-                )
-              )}
-            </>
-          )}
       </Row>
     </Container>
   );
