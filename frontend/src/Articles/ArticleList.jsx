@@ -1,4 +1,4 @@
-import { Button, Card, Col, Container, Row } from "react-bootstrap";
+import { Button, Card, Col, Container, Pagination, Row } from "react-bootstrap";
 
 import { useEffect, useState } from "react";
 import { useTextInput } from "../SharedHooks/customHooks";
@@ -17,6 +17,8 @@ export const ArticleList = () => {
   const [enableFilterByCategory, setEnableFilterByCategory] = useState(false);
   const [categoryFilter, setCategoryFilter] = useTextInput("");
   const [categoryList, setCategoryList] = useState([]);
+  const [articlePage, setArticlePage] = useState([]);
+  const [articlePageNumber, setArticlePageNumber] = useState(0);
   const isAdmin = useUserPrivilege("admin");
 
   const filteredByAuthor = articleList.filter((article) =>
@@ -30,6 +32,13 @@ export const ArticleList = () => {
   const filteredByCategory = articleList.filter(
     (article) => article.categoryID === +categoryFilter
   );
+
+  useEffect(() => {
+    fetch(`http://localhost:5000/articles/page`)
+      .then((response) => (response.ok ? response.json() : []))
+      .then((availableArticles) => setArticlePage([].concat(availableArticles)))
+      .then(pageList());
+  }, []);
 
   useEffect(() => {
     fetch(`http://localhost:5000/articles`)
@@ -57,6 +66,26 @@ export const ArticleList = () => {
     if (enableFilterByCategory) setEnableFilterByCategory(false);
     else setEnableFilterByCategory(true);
   };
+
+  const pageList = () => {
+    if (Math.floor(articlePage?.length % 10) === 0) {
+      setArticlePageNumber(articlePage?.length / 10);
+      return articlePage?.length / 10;
+    } else {
+      setArticlePageNumber(articlePage?.length / 10 + 1);
+      return Math.floor(articlePage?.length / 10) + 1;
+    }
+  };
+
+  let active = 1;
+  let items = [];
+  for (let number = 1; number <= 5; number++) {
+    items.push(
+      <Pagination.Item key={number} active={number === active}>
+        {number}
+      </Pagination.Item>
+    );
+  }
 
   return (
     <Container style={{ maxWidth: "1080" }}>
@@ -92,6 +121,13 @@ export const ArticleList = () => {
                       </Col>
                     )
                   )}
+                  <Col>
+                    {" "}
+                    <div>
+                      <Pagination size="lg">{items}</Pagination>
+                      <br />
+                    </div>
+                  </Col>
                 </>
               )}
             {enableFilterByAuthor &&

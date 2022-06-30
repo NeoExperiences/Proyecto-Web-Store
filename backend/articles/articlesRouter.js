@@ -4,7 +4,9 @@ const {
     getArticle,
     updateArticle,
     addArticle,
-    deleteArticle
+    deleteArticle,
+    getPagedArticles,
+    existingArticles
 } = require('./articlesService');
 const { commentsRouter } = require('./comments/commentsRouter')
 
@@ -18,6 +20,16 @@ const verifyArticle = async (request, response, next) => {
 
 articlesRouter.get('/', async (request, response) => {
     response.status(200).json(await getAllArticles())
+})
+
+articlesRouter.get('/page/', async (request, response) => {
+    const allArticles = existingArticles()
+    response.status(200).json(await allArticles)
+})
+
+articlesRouter.get('/page/:id', async (request, response) => {
+    const offset = (10 * +request.params.id)
+    response.status(200).json(await getPagedArticles(offset))
 })
 
 articlesRouter.get('/:id', validateId, async (request, response) => {
