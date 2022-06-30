@@ -29,6 +29,7 @@ const updateArticle = async article => {
     const [, modified] = await db.query(`
     UPDATE articulos SET
         postName = :postName,
+        picture = :picture,
         postContent = :postContent
     WHERE id = :id
     `, {

@@ -59,10 +59,10 @@ export const ArticleList = () => {
   };
 
   return (
-    <Container>
+    <Container style={{ maxWidth: "1080" }}>
       <Row>
-        <Col>
-          <Row padding-right="0">
+        <Col xs="auto" lg="9" sm="9">
+          <Row>
             {!enableFilterByAuthor &&
               !enableFilterByCategory &&
               !enableFilterByTitle && (
@@ -189,23 +189,41 @@ export const ArticleList = () => {
               )}
           </Row>
         </Col>
-        <Col xs lg="3">
-          <Card className="fixed-column" border="light" lg="12" sm="12">
+        <Col xs="auto" lg="3" sm="3">
+          <Card className="fixed-column">
             <Card.Header>Filtrar por:</Card.Header>
             <Card.Body>
               <Row>
                 {!enableFilterByCategory && !enableFilterByTitle && (
-                  <Button onClick={toggleFilterByAuthor}>Autor</Button>
+                  <Button
+                    onClick={toggleFilterByAuthor}
+                    className="filter-button"
+                    variant="warning"
+                  >
+                    Autor
+                  </Button>
                 )}
               </Row>
               <Row>
                 {!enableFilterByAuthor && !enableFilterByCategory && (
-                  <Button onClick={toggleFilterByTitle}>Titulo</Button>
+                  <Button
+                    onClick={toggleFilterByTitle}
+                    className="filter-button"
+                    variant="warning"
+                  >
+                    Titulo
+                  </Button>
                 )}
               </Row>
               <Row>
                 {!enableFilterByAuthor && !enableFilterByTitle && (
-                  <Button onClick={toggleFilterByCategory}>Categoria</Button>
+                  <Button
+                    onClick={toggleFilterByCategory}
+                    className="filter-button"
+                    variant="warning"
+                  >
+                    Categoria
+                  </Button>
                 )}
               </Row>
               <Row>
@@ -250,9 +268,12 @@ export const ArticleList = () => {
               sm="12"
             >
               <Card.Body>
-                <Link to={"/Post"}>
+                <Link
+                  to={"/Post"}
+                  style={{ textDecoration: "none", color: "black" }}
+                >
                   <Row>
-                    <Button>Crear Articulo</Button>
+                    <Button variant="warning">Crear Articulo</Button>
                   </Row>
                 </Link>
               </Card.Body>

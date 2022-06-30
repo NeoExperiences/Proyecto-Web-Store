@@ -29,15 +29,29 @@ articlesRouter.get('/:id', validateId, async (request, response) => {
 
 articlesRouter.put('/:id', validateId, verifyArticle, async (request, response) => {
     const id = +request.params.id
-    const { postName, postContent } = request.body
-    const article = {
-        id,
-        postName,
-        postContent
+    const { postName, postContent, picture } = request.body
+    if (!picture){
+        const article = {
+            id,
+            postName,
+            picture: "https://via.placeholder.com/150/92c952",
+            postContent
+        }
+        const updated = await updateArticle(article)
+        response.status(updated? 204 : 400).end()
     }
-    console.log("HERE",article)
-    const updated = await updateArticle(article)
-    response.status(updated? 204 : 400).end()
+    else {
+        const article = {
+            id,
+            postName,
+            picture,
+            postContent
+        }
+        const updated = await updateArticle(article)
+        response.status(updated? 204 : 400).end()
+    }
+    
+    
 })
 
 
@@ -53,15 +67,28 @@ articlesRouter.delete('/:id', validateId, verifyArticle, checkRole('admin'), asy
 
 articlesRouter.post('/', checkRole('admin'), async (request, response) => {
     const { postName, postContent, userID, picture, categoryID } = request.body
-    const article = {
-        postName,
-        postContent,
-        userID,
-        postDate:new Date(),
-        postCategory:categoryID,
-        picture
+    if (!picture) {
+        const article = {
+            postName,
+            postContent,
+            userID,
+            postDate:new Date(),
+            postCategory:categoryID,
+            picture: "https://via.placeholder.com/150/92c952"
+        }
+        response.status(200).json(await addArticle(article))
+    } else {
+        const article = {
+            postName,
+            postContent,
+            userID,
+            postDate:new Date(),
+            postCategory:categoryID,
+            picture
+        }
+        response.status(200).json(await addArticle(article))
     }
-    response.status(200).json(await addArticle(article))
+    
 })
 
 

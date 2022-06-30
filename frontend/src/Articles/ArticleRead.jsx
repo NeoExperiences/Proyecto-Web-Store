@@ -5,7 +5,6 @@ import { Button } from "react-bootstrap";
 import { Form } from "react-bootstrap";
 import { Row, Image } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import {
   useTextInput,
@@ -13,13 +12,14 @@ import {
   useUserPrivilege,
 } from "../SharedHooks/customHooks";
 import { CommentList } from "./Comments/CommentList";
-import { fetchArticle, useFetchUserData } from "./helpers";
+import { fetchArticle } from "./helpers";
 
 export const ArticleRead = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [article, setArticle] = useState({});
   const [editedPostTitle, setEditedPostTitle] = useTextInput("");
+  const [editedPostPicture, setEditedPostPicture] = useTextInput("");
   const [editedPost, setEditedPost] = useTextInput("");
   const [enableEdit, setEnableEdit] = useState(false);
 
@@ -27,9 +27,10 @@ export const ArticleRead = () => {
     fetchArticle(id).then((article) => {
       setArticle(article);
       setEditedPostTitle({ target: { value: article?.postName } });
+      setEditedPostPicture({ target: { value: article?.picture } });
       setEditedPost({ target: { value: article?.postContent } });
     });
-  }, [id]);
+  }, [id, setEditedPost, setEditedPostPicture, setEditedPostTitle]);
 
   const refreshPost = () => {
     fetchArticle(id).then((article) => {
@@ -55,6 +56,7 @@ export const ArticleRead = () => {
         body: JSON.stringify({
           postName: editedPostTitle,
           postContent: editedPost,
+          picture: editedPostPicture,
         }),
       });
       if (response.ok) {
@@ -104,6 +106,11 @@ export const ArticleRead = () => {
                   rows={5}
                 />
                 <Form.Control
+                  onChange={setEditedPostPicture}
+                  value={editedPostPicture}
+                  rows={5}
+                />
+                <Form.Control
                   as="textarea"
                   onChange={setEditedPost}
                   value={editedPost}
@@ -129,8 +136,8 @@ export const ArticleRead = () => {
                 <Row>
                   <Col>
                     <Image
-                      src={article?.userPicture}
-                      roundedCircle={true}
+                      src={article?.picture}
+                      style={{ height: "auto", width: "700px" }}
                       alt=""
                     />
                   </Col>

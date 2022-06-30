@@ -1,7 +1,7 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import { Route, Routes, useNavigate, useLocation } from "react-router-dom";
-import { Login, UserContextProvider } from "./Login";
+import { Login } from "./Login";
 import { Articles } from "./Articles";
 import { Register } from "./Register";
 import { UserProfile } from "./UserProfile";
@@ -70,7 +70,7 @@ export function App() {
     }
     `}
       </style>
-      <Navbar className="elmedioamarillo">
+      <Navbar sticky="top" className="elmedioamarillo">
         <Container>
           {userToken ? (
             <>
@@ -79,7 +79,7 @@ export function App() {
                 as={Link}
                 to={"/Articles"}
               >
-                <img src="https://i.imgur.com/31D5vPD.png"></img>
+                <img src="https://i.imgur.com/31D5vPD.png" alt="El Medio"></img>
               </Navbar.Brand>
               <Nav className="me-auto">
                 <Nav.Link
@@ -124,12 +124,8 @@ export function App() {
             </>
           ) : (
             <>
-              <Navbar.Brand
-                className="elmedioamarillo"
-                as={Link}
-                to={"/Articles"}
-              >
-                <img src="https://i.imgur.com/31D5vPD.png"></img>
+              <Navbar.Brand className="elmedioamarillo" as={Link} to={"/Login"}>
+                <img src="https://i.imgur.com/31D5vPD.png" alt="El Medio"></img>
               </Navbar.Brand>
               <Nav>
                 <Nav.Link

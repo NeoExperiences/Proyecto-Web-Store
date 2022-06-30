@@ -8,6 +8,7 @@ import { FilterByCategory } from "./ArticleFilterByCategory";
 export const ArticleCreate = () => {
   const navigate = useNavigate();
   const [createdPostTitle, setCreatedPostTitle] = useTextInput("");
+  const [createdPostPicture, setCreatedPostPicture] = useTextInput("");
   const [createdPost, setCreatedPost] = useTextInput("");
   const [categoryList, setCategoryList] = useState([]);
   const [categorySelection, setCategorySelection] = useTextInput("");
@@ -27,7 +28,7 @@ export const ArticleCreate = () => {
           postContent: createdPost,
           userID: userID,
           categoryID: categorySelection,
-          picture: "",
+          picture: createdPostPicture,
         }),
       });
       if (response.ok) {
@@ -52,6 +53,11 @@ export const ArticleCreate = () => {
           <Form.Control
             onChange={setCreatedPostTitle}
             value={createdPostTitle}
+            rows={5}
+          />
+          <Form.Control
+            onChange={setCreatedPostPicture}
+            value={createdPostPicture}
             rows={5}
           />
           <FilterByCategory

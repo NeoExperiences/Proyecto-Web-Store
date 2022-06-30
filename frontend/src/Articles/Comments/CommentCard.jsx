@@ -99,7 +99,12 @@ export const CommentCard = ({
               />
               <Form.Control className="nt-3" type="submit" />
             </Form.Group>
-            <Button onClick={toggleEdit}>Cerrar</Button>
+            <Image
+              as={Button}
+              onClick={toggleEdit}
+              src="https://i.imgur.com/Xd7YYnx.png"
+              alt="Edit Button"
+            />
           </Form>
         ) : (
           <>
@@ -115,13 +120,25 @@ export const CommentCard = ({
                 />{" "}
                 {userName} dice:
               </Container>
-              <Container>{commentDate}</Container>
-              {(isAdmin || originalCommenter) && (
-                <Container>
-                  <Button onClick={toggleEdit}>Editar</Button>
-                  <Button onClick={deletePost}>Borrar</Button>
-                </Container>
-              )}
+              <Container>
+                {commentDate}{" "}
+                {(isAdmin || originalCommenter) && (
+                  <Container>
+                    <Image
+                      as={Button}
+                      onClick={toggleEdit}
+                      src="https://i.imgur.com/BzFbuNU.png"
+                      alt="Edit Button"
+                    />
+                    <Image
+                      as={Button}
+                      onClick={deletePost}
+                      src="https://i.imgur.com/frPtQSP.png"
+                      alt="Delete Button"
+                    />
+                  </Container>
+                )}
+              </Container>
             </Card.Header>
             <Card.Body>
               <Card.Title>{userComment}</Card.Title>
