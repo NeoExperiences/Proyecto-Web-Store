@@ -24,12 +24,17 @@ articlesRouter.get('/', async (request, response) => {
 
 articlesRouter.get('/page/', async (request, response) => {
     const allArticles = existingArticles()
-    response.status(200).json(await allArticles)
+    console.log((await allArticles).length)
+    response.status(200).json((await allArticles).length)
 })
 
 articlesRouter.get('/page/:id', async (request, response) => {
-    const offset = (10 * +request.params.id)
-    response.status(200).json(await getPagedArticles(offset))
+    const offset = ((10 * (+request.params.id)) - 10)
+    if (offset >= 0){
+        response.status(200).json(await getPagedArticles(offset))
+    } else {
+        response.status(200).json(await getPagedArticles(0))
+    }
 })
 
 articlesRouter.get('/:id', validateId, async (request, response) => {

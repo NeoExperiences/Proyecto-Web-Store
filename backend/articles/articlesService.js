@@ -2,8 +2,10 @@ const { db } = require('../db/connect')
 
 const getPagedArticles = async offset => {
     return await db.query(`
-    SELECT artic.id, artic.postName
+    SELECT artic.id, artic.postName, artic.postContent, artic.picture, user.username as userName, user.picture as userPicture, artic.postDate, cat.name as categoryName, cat.id as categoryID
     FROM articulos artic
+    JOIN usuarios user ON artic.userID = user.id
+    JOIN categorias cat ON artic.postCategory = cat.id
     LIMIT 10 OFFSET :offset;
     `, {
         type: db.QueryTypes.SELECT,       
