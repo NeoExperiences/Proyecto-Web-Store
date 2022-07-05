@@ -88,6 +88,7 @@ export const ArticleList = () => {
   const changePage = (number) => {
     setArticlePageNumber(number);
     fetchArticlePage();
+    console.log(articlePageNumber, articlePage);
   };
 
   let items = [];
