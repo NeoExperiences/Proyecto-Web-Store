@@ -18,7 +18,7 @@ export const ArticleList = () => {
   const [categoryFilter, setCategoryFilter] = useTextInput("");
   const [categoryList, setCategoryList] = useState([]);
   const [articlePage, setArticlePage] = useState([]);
-  const [articlePageNumber, setArticlePageNumber] = useState(1);
+  const [articlePageNumber, setArticlePageNumber] = useState(0);
   const [articleTotalPages, setArticleTotalPages] = useState(0);
   const isAdmin = useUserPrivilege("admin");
 
