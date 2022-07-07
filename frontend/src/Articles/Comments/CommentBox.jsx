@@ -21,6 +21,7 @@ export const CommentBox = ({ articleID, refreshComments }) => {
       );
       if (response.ok) {
         refreshComments();
+        setEnableReplyBox(false);
       }
     } catch (error) {
       console.log("error", error);

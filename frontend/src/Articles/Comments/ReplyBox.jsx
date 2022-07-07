@@ -34,7 +34,7 @@ export const ReplyBox = ({ articleID, commentID, refreshReplies }) => {
   };
 
   return (
-    <Container>
+    <div style={{ textAlign: "right" }}>
       {enableReplyBox ? (
         <Form onSubmit={submitReply}>
           <Form.Label>Responder</Form.Label>
@@ -54,6 +54,6 @@ export const ReplyBox = ({ articleID, commentID, refreshReplies }) => {
           <Button onClick={toggleBox}>Responder</Button>
         </Container>
       )}
-    </Container>
+    </div>
   );
 };

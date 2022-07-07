@@ -59,7 +59,7 @@ export const CommentCard = ({
     }
   };
 
-  const deletePost = async (event) => {
+  const deletePost = async () => {
     try {
       const response = await fetch(
         `http://localhost:5000/articles/${articleID}/comments/${commentID}`,
@@ -78,6 +78,7 @@ export const CommentCard = ({
     } catch (error) {
       console.log("error", error);
     }
+    refreshComments();
   };
 
   const toggleEdit = () => {
@@ -109,36 +110,47 @@ export const CommentCard = ({
         ) : (
           <>
             <Card.Header>
-              <Container className="container-embolden">
-                <Image
-                  className="avatar-aspect-ratio"
-                  src={userPicture}
-                  roundedCircle={true}
-                  width="40"
-                  height="40"
-                  alt="Missing user avatar."
-                />{" "}
-                {userName} dice:
-              </Container>
-              <Container>
-                {commentDate}{" "}
-                {(isAdmin || originalCommenter) && (
-                  <Container>
-                    <Image
-                      as={Button}
-                      onClick={toggleEdit}
-                      src="https://i.imgur.com/BzFbuNU.png"
-                      alt="Edit Button"
-                    />
-                    <Image
-                      as={Button}
-                      onClick={deletePost}
-                      src="https://i.imgur.com/frPtQSP.png"
-                      alt="Delete Button"
-                    />
-                  </Container>
-                )}
-              </Container>
+              <Row>
+                <Col
+                  className="container-embolden"
+                  xs
+                  lg="8"
+                  style={{ width: "91%", paddingLeft: "100px" }}
+                >
+                  <Image
+                    className="avatar-aspect-ratio"
+                    src={userPicture}
+                    roundedCircle={true}
+                    width="40"
+                    height="40"
+                    alt="Missing user avatar."
+                  />{" "}
+                  {userName} dice:
+                  <Container>{commentDate} </Container>
+                </Col>
+                <Col lg="1">
+                  {(isAdmin || originalCommenter) && (
+                    <>
+                      <Container>
+                        <Image
+                          as={Button}
+                          onClick={toggleEdit}
+                          src="https://i.imgur.com/jU2LXB6.png"
+                          alt="Edit Button"
+                        />
+                      </Container>
+                      <Container>
+                        <Image
+                          as={Button}
+                          onClick={deletePost}
+                          src="https://i.imgur.com/gmeQ1YS.png"
+                          alt="Delete Button"
+                        />
+                      </Container>
+                    </>
+                  )}
+                </Col>
+              </Row>
             </Card.Header>
             <Card.Body>
               <Card.Title>{userComment}</Card.Title>

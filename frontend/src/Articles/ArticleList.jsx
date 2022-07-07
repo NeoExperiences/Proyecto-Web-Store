@@ -18,7 +18,7 @@ export const ArticleList = () => {
   const [categoryFilter, setCategoryFilter] = useTextInput("");
   const [categoryList, setCategoryList] = useState([]);
   const [articlePage, setArticlePage] = useState([]);
-  const [articlePageNumber, setArticlePageNumber] = useState(0);
+  const [articlePageNumber, setArticlePageNumber] = useState(1);
   const [articleTotalPages, setArticleTotalPages] = useState(0);
   const isAdmin = useUserPrivilege("admin");
 
@@ -50,10 +50,11 @@ export const ArticleList = () => {
       );
   }, []);
 
-  const fetchArticlePage = async () => {
-    await fetch(`http://localhost:5000/articles/page/${articlePageNumber}`)
+  const fetchArticlePage = (number) => {
+    setArticlePageNumber(number);
+    fetch(`http://localhost:5000/articles/page/${number}`)
       .then((response) => (response.ok ? response.json() : []))
-      .then(async (pageArticles) =>
+      .then((pageArticles) =>
         setArticlePage([].concat(pageArticles).reverse())
       );
   };
@@ -85,19 +86,13 @@ export const ArticleList = () => {
     else setEnableFilterByCategory(true);
   };
 
-  const changePage = (number) => {
-    setArticlePageNumber(number);
-    fetchArticlePage();
-    console.log(articlePageNumber, articlePage);
-  };
-
   let items = [];
   for (let number = 1; number <= articleTotalPages; number++) {
     items.push(
       <Pagination.Item
         key={number}
         active={number === articlePageNumber}
-        onClick={async () => changePage(number)}
+        onClick={async () => fetchArticlePage(number)}
       >
         {number}
       </Pagination.Item>
