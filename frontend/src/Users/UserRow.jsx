@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Form, Image } from "react-bootstrap";
+import { Alert, Form, Image } from "react-bootstrap";
 import { Button } from "react-bootstrap";
 import { useTextInput } from "../SharedHooks/customHooks";
 
@@ -19,6 +19,7 @@ export const UserRow = ({
   const [editedPicture, setEditedPicture] = useTextInput(picture);
   const [editedRole, setEditedRole] = useTextInput(role);
   const [enableEdit, setEnableEdit] = useState(false);
+  const [errorStatus, setErrorStatus] = useState("");
   const valuesHaveChanged =
     username !== editedUsername ||
     email !== editedEmail ||
@@ -64,9 +65,11 @@ export const UserRow = ({
       if (response.ok) {
         toggleEdit();
         refreshUsers();
+      } else {
+        throw await response.text();
       }
     } catch (error) {
-      console.log("error", error);
+      setErrorStatus(error);
     }
   };
 
@@ -77,6 +80,17 @@ export const UserRow = ({
 
   return (
     <tr>
+      <>
+        {errorStatus && (
+          <Alert
+            variant="danger"
+            onClose={() => setErrorStatus("")}
+            dismissible
+          >
+            <Alert.Heading>{errorStatus}</Alert.Heading>
+          </Alert>
+        )}
+      </>
       <td>
         {!enableEdit ? (
           username

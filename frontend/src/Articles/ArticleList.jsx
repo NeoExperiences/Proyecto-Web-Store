@@ -316,14 +316,20 @@ export const ArticleList = () => {
               sm="12"
             >
               <Card.Body>
-                <Link
-                  to={"/Post"}
-                  style={{ textDecoration: "none", color: "black" }}
-                >
-                  <Row>
-                    <Button variant="warning">Crear Articulo</Button>
-                  </Row>
-                </Link>
+                <Row>
+                  <Button
+                    as={Link}
+                    to={"/Post"}
+                    variant="warning"
+                    style={{ borderColor: "#ffffff" }}
+                  >
+                    Crear Articulo
+                  </Button>
+                  <></>
+                  <Button as={Link} to={"/Users"} variant="warning">
+                    Panel de Administracion
+                  </Button>
+                </Row>
               </Card.Body>
             </Card>
           )}

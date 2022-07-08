@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS categorias (
 CREATE TABLE IF NOT EXISTS articulos (
   id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
   postName VARCHAR(256) NOT NULL UNIQUE,
-  postContent VARCHAR(1024) NOT NULL,
+  postContent VARCHAR(2048) NOT NULL,
   postCategory INT UNSIGNED NOT NULL,
   postDate varchar(256) NOT NULL,
   userID INT UNSIGNED NOT NULL,
@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS articulos (
 
 CREATE TABLE IF NOT EXISTS comentarios (
   id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  userComment varchar(256) NOT NULL,
+  userComment varchar(1024) NOT NULL,
   commentDate varchar(256) NOT NULL,
   userID int(11) NOT NULL,
   postID int(11) NOT NULL
