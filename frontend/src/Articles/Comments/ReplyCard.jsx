@@ -42,11 +42,11 @@ export const ReplyCard = ({
       );
       if (response.ok) {
         toggleEdit();
-        refreshReplies();
       }
     } catch (error) {
       console.log("error", error);
     }
+    refreshReplies();
   };
 
   const deleteReply = async (event) => {
@@ -63,11 +63,11 @@ export const ReplyCard = ({
       );
       if (response.ok) {
         console.log("Successful Deletion.");
-        refreshReplies();
       }
     } catch (error) {
       console.log("error", error);
     }
+    refreshReplies();
   };
 
   const toggleEdit = () => {

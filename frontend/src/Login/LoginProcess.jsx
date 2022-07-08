@@ -1,10 +1,12 @@
-import { Container, Form } from "react-bootstrap";
+import { useState } from "react";
+import { Alert, Container, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { useTextInput } from "../SharedHooks/customHooks";
 
 export const Login = ({ setToken, originalPath }) => {
   const [username, setUsername] = useTextInput("");
   const [password, setPassword] = useTextInput("");
+  const [errorStatus, setErrorStatus] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
@@ -21,9 +23,11 @@ export const Login = ({ setToken, originalPath }) => {
         const { token } = await response.json();
         setToken(token);
         navigate(originalPath);
+      } else {
+        throw await response.text();
       }
     } catch (error) {
-      console.log("error", error);
+      setErrorStatus(error);
     }
   };
 
@@ -50,6 +54,11 @@ export const Login = ({ setToken, originalPath }) => {
         />
         <Form.Control className="nt-3" type="submit" />
       </Form>
+      {errorStatus && (
+        <Alert variant="danger" onClose={() => setErrorStatus("")} dismissible>
+          <Alert.Heading>{errorStatus}</Alert.Heading>
+        </Alert>
+      )}
     </Container>
   );
 };

@@ -13,19 +13,20 @@ import { Nav } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { Button } from "react-bootstrap";
-import { useUserPrivilege } from "./SharedHooks/customHooks";
+import { useUserPrivilege, fetchUserData } from "./SharedHooks/customHooks";
 
 export function App() {
   const location = useLocation();
   const navigate = useNavigate();
   const isAdmin = useUserPrivilege("admin");
-
+  const [userData, setUserData] = useState({});
   const [userToken, setUserToken] = useState(
     localStorage.getItem("tokenStorage")
   );
 
   useEffect(
     () => {
+      fetchUserData(userToken, setUserData);
       if (
         !localStorage.getItem("tokenStorage") &&
         !/^\/register$/i.test(location.pathname)
@@ -34,6 +35,7 @@ export function App() {
       } else if (/^\/login$/i.test(location.pathname)) {
         navigate(`/articles`);
       }
+      console.log(userData);
     }, // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
@@ -46,19 +48,19 @@ export function App() {
   const signOut = () => {
     localStorage.removeItem("tokenStorage");
     setUserToken(null);
+    setUserData({});
     navigate("/login");
   };
 
-  const [userData, setUserData] = useState({});
-  useEffect(() => {
-    fetch(`http://localhost:5000/userprofile`, {
-      headers: {
-        Authorization: `Bearer ${userToken}`,
-      },
-    })
-      .then((response) => (response.ok ? response.json() : {}))
-      .then((userData) => setUserData(userData));
-  }, [userToken]);
+  // useEffect(() => {
+  //   fetch(`http://localhost:5000/userprofile`, {
+  //     headers: {
+  //       Authorization: `Bearer ${userToken}`,
+  //     },
+  //   })
+  //     .then((response) => (response.ok ? response.json() : {}))
+  //     .then((userData) => setUserData(userData));
+  // }, [userToken]);
 
   return (
     <div className="App">

@@ -1,4 +1,4 @@
-import { Button, Form, Image, Row } from "react-bootstrap";
+import { Button, Image, Row } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { UserProfileEdit } from "./UserProfileEdit";
@@ -46,9 +46,11 @@ export const UserProfileData = () => {
         />
       ) : (
         <div className="mb-5 mt-5" lg="2" sm="4">
-          <Button onClick={toggleEdit}>Editar Datos</Button>
+          <Button onClick={toggleEdit} variant="warning">
+            Editar Datos
+          </Button>
           <Link to={"/Articles"}>
-            <Button>Volver</Button>
+            <Button variant="warning">Volver</Button>
           </Link>
           <div>Nombre del Usuario: {userData.username}</div>
           <div>Email: {userData.email}</div>

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Container, Form } from "react-bootstrap";
+import { Button, Form, Image } from "react-bootstrap";
 import { useTextInput } from "../../SharedHooks/customHooks";
 
 export const ReplyBox = ({ articleID, commentID, refreshReplies }) => {
@@ -7,24 +7,26 @@ export const ReplyBox = ({ articleID, commentID, refreshReplies }) => {
   const [enableReplyBox, setEnableReplyBox] = useState(false);
   const submitReply = async (event) => {
     event.preventDefault();
-    try {
-      const response = await fetch(
-        `http://localhost:5000/articles/${articleID}/comments/${commentID}/replies`,
-        {
-          method: "post",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("tokenStorage")}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ userReply }),
+    if (userReply !== "") {
+      try {
+        const response = await fetch(
+          `http://localhost:5000/articles/${articleID}/comments/${commentID}/replies`,
+          {
+            method: "post",
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("tokenStorage")}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ userReply }),
+          }
+        );
+        if (response.ok) {
+          toggleBox();
+          refreshReplies();
         }
-      );
-      if (response.ok) {
-        toggleBox();
-        refreshReplies();
+      } catch (error) {
+        console.log("error", error);
       }
-    } catch (error) {
-      console.log("error", error);
     }
   };
 
@@ -37,7 +39,10 @@ export const ReplyBox = ({ articleID, commentID, refreshReplies }) => {
     <div style={{ textAlign: "right" }}>
       {enableReplyBox ? (
         <Form onSubmit={submitReply}>
-          <Form.Label>Responder</Form.Label>
+          <Button variant="warning" onClick={toggleBox}>
+            Cerrar
+          </Button>
+          <Form.Label></Form.Label>
           <Form.Group className="mb-3">
             <Form.Control
               as="textarea"
@@ -47,12 +52,16 @@ export const ReplyBox = ({ articleID, commentID, refreshReplies }) => {
             />
             <Form.Control className="nt-3" type="submit" />
           </Form.Group>
-          <Button onClick={toggleBox}>Cerrar</Button>
         </Form>
       ) : (
-        <Container>
-          <Button onClick={toggleBox}>Responder</Button>
-        </Container>
+        <div>
+          <Image
+            as={Button}
+            onClick={toggleBox}
+            src="https://i.imgur.com/zzRDt8e.png"
+            alt="Reply Button"
+          />
+        </div>
       )}
     </div>
   );

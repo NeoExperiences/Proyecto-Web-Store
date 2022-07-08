@@ -23,3 +23,14 @@ export const useUserPrivilege = (role) => {
     const { roleName } = useUserData()
     return roleName === role
 }
+
+
+export const fetchUserData = async (userToken, setUserData) => {
+    await fetch(`http://localhost:5000/userprofile`, {
+      headers: {
+        Authorization: `Bearer ${userToken}`,
+      },
+    })
+      .then((response) => (response.ok ? response.json() : {}))
+      .then((userData) => setUserData(userData));
+  };

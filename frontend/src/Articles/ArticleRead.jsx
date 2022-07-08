@@ -94,9 +94,13 @@ export const ArticleRead = () => {
   return (
     <>
       {postPrivilige && (
-        <Container data-testid="original-poster">
-          <Button onClick={toggleEdit}>Editar</Button>
-          <Button onClick={deletePost}>Borrar</Button>
+        <Container data-testid="original-poster" style={{ textAlign: "right" }}>
+          <Button variant="warning" onClick={toggleEdit}>
+            Editar
+          </Button>
+          <Button variant="warning" onClick={deletePost}>
+            Borrar
+          </Button>
           {enableEdit && (
             <Form onSubmit={updatePost}>
               <Form.Group className="mb-3">
@@ -137,7 +141,7 @@ export const ArticleRead = () => {
                   <Col>
                     <Image
                       src={article?.picture}
-                      style={{ height: "auto", width: "700px" }}
+                      style={{ height: "auto", width: "500px" }}
                       alt=""
                     />
                   </Col>

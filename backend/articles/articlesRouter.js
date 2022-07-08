@@ -24,7 +24,6 @@ articlesRouter.get('/', async (request, response) => {
 
 articlesRouter.get('/page/', async (request, response) => {
     const allArticles = existingArticles()
-    console.log((await allArticles).length)
     response.status(200).json((await allArticles).length)
 })
 

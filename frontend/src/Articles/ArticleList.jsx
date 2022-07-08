@@ -48,7 +48,7 @@ export const ArticleList = () => {
       .then((pageArticles) =>
         setArticlePage([].concat(pageArticles).reverse())
       );
-  }, []);
+  }, [articlePageNumber]);
 
   const fetchArticlePage = (number) => {
     setArticlePageNumber(number);

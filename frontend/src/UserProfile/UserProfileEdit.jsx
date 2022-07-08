@@ -78,7 +78,9 @@ export const UserProfileEdit = ({
         />
         <Form.Control className="nt-3" type="submit" />
       </Form.Group>
-      <Button onClick={closeEdit}>Cancelar</Button>
+      <Button variant="warning" onClick={closeEdit}>
+        Cancelar
+      </Button>
     </Form>
   );
 };

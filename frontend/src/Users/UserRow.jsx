@@ -144,15 +144,21 @@ export const UserRow = ({
       <td>
         {!enableEdit ? (
           <>
-            <Button onClick={submitDeleteUser(id)}>Borrar</Button>
-            <Button onClick={toggleEdit}>Editar</Button>
+            <Button variant="warning" onClick={submitDeleteUser(id)}>
+              Borrar
+            </Button>
+            <Button variant="warning" onClick={toggleEdit}>
+              Editar
+            </Button>
           </>
         ) : (
           <>
             <Button disabled={!valuesHaveChanged} onClick={updateUser}>
               Guardar
             </Button>
-            <Button onClick={toggleEdit}>Cancelar</Button>
+            <Button variant="warning" onClick={toggleEdit}>
+              Cancelar
+            </Button>
           </>
         )}
       </td>

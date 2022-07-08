@@ -37,7 +37,10 @@ export const CommentBox = ({ articleID, refreshComments }) => {
     <Container>
       {enableReplyBox ? (
         <Form onSubmit={submitComment}>
-          <Form.Label>Caja de Comentarios</Form.Label>
+          <Button variant="warning" onClick={toggleBox}>
+            Cerrar
+          </Button>
+          <Form.Label></Form.Label>
           <Form.Group className="mb-3">
             <Form.Control
               as="textarea"
@@ -47,11 +50,12 @@ export const CommentBox = ({ articleID, refreshComments }) => {
             />
             <Form.Control className="nt-3" type="submit" />
           </Form.Group>
-          <Button onClick={toggleBox}>Cerrar</Button>
         </Form>
       ) : (
         <Container>
-          <Button onClick={toggleBox}>Comentar</Button>
+          <Button variant="warning" onClick={toggleBox}>
+            Comentar
+          </Button>
         </Container>
       )}
     </Container>
